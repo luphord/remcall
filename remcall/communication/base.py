@@ -1,0 +1,6 @@
+# Commands
+REQUEST_SCHEMA = b'\x00'
+SEND_SCHEMA = b'\x01'
+CALL_METHOD = b'\x05'
+RETURN_FROM_METHOD = b'\x06'
+NOOP = b'\x07'
