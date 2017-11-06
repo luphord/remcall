@@ -44,8 +44,8 @@ class TestSchema(unittest.TestCase):
     def test_basic_communication(self):
         stream1 = QueueStream('server-calls-client')
         stream2 = QueueStream('client-calls-server')
-        client_bridge = Bridge(self.schema, stream1, stream2, True)
-        server_bridge = Bridge(self.schema, stream2, stream1, False)
+        client_bridge = Bridge(self.schema, stream1, stream2, None)
+        server_bridge = Bridge(self.schema, stream2, stream1, "todo!")
         Thread(target=client_bridge.receiver.mainloop).start()
         Thread(target=server_bridge.receiver.mainloop).start()
 

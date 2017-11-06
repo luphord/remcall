@@ -7,14 +7,20 @@ from .proxy import ProxyFactory
 from ..schema import Type
 
 class Bridge:
-    def __init__(self, schema, instream, outstream, is_client):
+    def __init__(self, schema, instream, outstream, main):
         self.receiver = Receiver(schema, instream, None, self.return_method)
         self.sender = Sender(schema, outstream, None)
         self.proxy_factory = ProxyFactory(schema, self)
-        self.is_client = is_client
-        self.store = ReferenceStore(is_client, self.proxy_factory)
+        self.main = main
+        self.is_client = main is None
+        self.store = ReferenceStore(self.is_client, self.proxy_factory)
         self.receiver.get_object = self.store.get_object
         self.sender.get_id_for_object = self.store.get_id_for_object
+        main_id = self.sender.get_id_for_object(self.main)
+        if self.is_client:
+            assert main_id == 0, 'ID of main object is {} but should be 0 on client as it is None'.format(main_id)
+        else:
+            assert main_id == 1, 'ID of main object is {} but should be 1 on server'.format(main_id)
 
     def call_method(self, method, this, args_dict):
         request_id = self.sender.call_method(method, this, args_dict)
