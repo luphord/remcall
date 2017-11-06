@@ -147,6 +147,7 @@ class Schema:
         if sha256_digest:
             assert len(sha256_digest) == 32, 'SHA256 digest must be 32 bytes long'
         self.sha256_digest = sha256_digest
+        self.main_type = list(self.interfaces_sorted)[-1] # todo: select main type
 
     @property
     def iter_declared_types(self):

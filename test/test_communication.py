@@ -26,7 +26,7 @@ class ClientUserImpl:
     def GetAge(self):
         return 666
 
-class TestSchema(unittest.TestCase):
+class TestCommunication(unittest.TestCase):
 
     def setUp(self):
         import base64, io
@@ -40,12 +40,12 @@ class TestSchema(unittest.TestCase):
         dFN0YXR1cwAAAAAAAAAQhoDJxvkhM+M9xtjOp6wMhIUpsyKgRUApgH+LoWkvOxg=
         ''')
         self.schema = schema_from_bytes(serialized_schema)
+        self.stream1 = QueueStream('server-calls-client')
+        self.stream2 = QueueStream('client-calls-server')
 
     def test_basic_communication(self):
-        stream1 = QueueStream('server-calls-client')
-        stream2 = QueueStream('client-calls-server')
-        client_bridge = Bridge(self.schema, stream1, stream2, None)
-        server_bridge = Bridge(self.schema, stream2, stream1, "todo!")
+        client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, "not-required-here")
         Thread(target=client_bridge.receiver.mainloop).start()
         Thread(target=server_bridge.receiver.mainloop).start()
 
@@ -56,6 +56,21 @@ class TestSchema(unittest.TestCase):
         _client_u = ClientUserImpl()
         brian_proxy.AddFriend(_client_u, 1.1)
         self.assertEqual(1, len(brian.friends))
+        client_bridge.receiver.exit_mainloop = True
+        server_bridge.receiver.exit_mainloop = True
+        client_bridge.sender.noop()
+        server_bridge.sender.noop()
+
+    def test_main_start(self):
+        core_user = UserImpl(name='Core User', age=2**32-1)
+        client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, core_user)
+
+        Thread(target=client_bridge.receiver.mainloop).start()
+        Thread(target=server_bridge.receiver.mainloop).start()
+
+        self.assertEqual(core_user.age, client_bridge.server.GetAge())
+
         client_bridge.receiver.exit_mainloop = True
         server_bridge.receiver.exit_mainloop = True
         client_bridge.sender.noop()

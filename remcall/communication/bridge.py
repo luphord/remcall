@@ -21,6 +21,8 @@ class Bridge:
             assert main_id == 0, 'ID of main object is {} but should be 0 on client as it is None'.format(main_id)
         else:
             assert main_id == 1, 'ID of main object is {} but should be 1 on server'.format(main_id)
+        if self.is_client:
+            self.server = self.receiver.get_object(1, schema.main_type)
 
     def call_method(self, method, this, args_dict):
         request_id = self.sender.call_method(method, this, args_dict)
