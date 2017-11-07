@@ -80,5 +80,34 @@ class TestSchema(unittest.TestCase):
         with self.assertRaises(AssertionError):
             writer.write_name('123') # bad first char '1'
 
+    def test_int_type_writing(self):
+        import struct
+        stream = io.BytesIO()
+        writer = SchemaWriter(self.user_schema, stream)
+        writer.write_int8(2**7-1)
+        with self.assertRaises(struct.error):
+            writer.write_int8(2**7)
+        writer.write_uint8(2**8-1)
+        with self.assertRaises(struct.error):
+            writer.write_uint8(2**8)
+        writer.write_int16(2**15-1)
+        with self.assertRaises(struct.error):
+            writer.write_int16(2**15)
+        writer.write_uint16(2**16-1)
+        with self.assertRaises(struct.error):
+            writer.write_uint16(2**16)
+        writer.write_int32(2**31-1)
+        with self.assertRaises(struct.error):
+            writer.write_int32(2**31)
+        writer.write_uint32(2**32-1)
+        with self.assertRaises(struct.error):
+            writer.write_uint32(2**32)
+        writer.write_int64(2**63-1)
+        with self.assertRaises(struct.error):
+            writer.write_int64(2**63)
+        writer.write_uint64(2**64-1)
+        with self.assertRaises(struct.error):
+            writer.write_uint64(2**64)
+
 if __name__ == '__main__':
     unittest.main()
