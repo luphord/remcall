@@ -22,6 +22,13 @@ class UserImpl:
         #print('Adding friend completed')
         self.friends[user] = (degree, user.GetAge())
 
+class MainImpl:
+    def __init__(self):
+        self.first_user = UserImpl('First User', 2**32-1)
+
+    def GetFirstUser(self):
+        return self.first_user
+
 class ClientUserImpl:
     def GetAge(self):
         return 666
@@ -31,13 +38,14 @@ class TestCommunication(unittest.TestCase):
     def setUp(self):
         import base64, io
         serialized_schema = base64.decodebytes(b'''
-        UkVNQ0FMTFNDSEVNQQAAAAhNeVNjaGVtYQAAAAIAAAAEAAAAAQAAAAAAAAACAgAAABAAAAAGU3Rh
-        dHVzAAAAAwAAAApSZWdpc3RlcmVkAAAACUFjdGl2YXRlZAAAAAZMb2NrZWQEAAAAEQAAAARUZXN0
-        AAAAAAQAAAASAAAABFVzZXIAAAAIAAAAAAAHR2V0TmFtZQAAAAAAAAAMAAEAAAAHU2V0TmFtZQAA
-        AAEAAAAMAAAABG5hbWUAAAAAAAIAAAAMR2V0QmlydGhkYXRlAAAAAAAAAA0AAwAAAAxHZXRMYXN0
-        TG9naW4AAAAAAAAADwAEAAAACkdldEZyaWVuZHMAAAAA////7gAFAAAACUFkZEZyaWVuZAAAAAIA
-        AAASAAAABHVzZXIAAAAKAAAABmRlZ3JlZQAAAAAABgAAAAZHZXRBZ2UAAAAAAAAABwAHAAAACUdl
-        dFN0YXR1cwAAAAAAAAAQhoDJxvkhM+M9xtjOp6wMhIUpsyKgRUApgH+LoWkvOxg=
+        UkVNQ0FMTFNDSEVNQQAAAAhNeVNjaGVtYQAAAAIAAAAEAAAAAQAAAAAAAAADAgAAABAAAAAGU3Rh
+        dHVzAAAAAwAAAApSZWdpc3RlcmVkAAAACUFjdGl2YXRlZAAAAAZMb2NrZWQEAAAAEQAAAARNYWlu
+        AAAAAQAAAAAADEdldEZpcnN0VXNlcgAAAAAAAAATBAAAABIAAAAEVGVzdAAAAAAEAAAAEwAAAARV
+        c2VyAAAACAABAAAAB0dldE5hbWUAAAAAAAAADAACAAAAB1NldE5hbWUAAAABAAAADAAAAARuYW1l
+        AAAAAAADAAAADEdldEJpcnRoZGF0ZQAAAAAAAAANAAQAAAAMR2V0TGFzdExvZ2luAAAAAAAAAA8A
+        BQAAAApHZXRGcmllbmRzAAAAAP///+0ABgAAAAlBZGRGcmllbmQAAAACAAAAEwAAAAR1c2VyAAAA
+        CgAAAAZkZWdyZWUAAAAAAAcAAAAGR2V0QWdlAAAAAAAAAAcACAAAAAlHZXRTdGF0dXMAAAAAAAAA
+        EGmmw08BsPoT7a+Y4bntDog4MJleXLjqx4dnCT8o75Gk
         ''')
         self.schema = schema_from_bytes(serialized_schema)
         self.stream1 = QueueStream('server-calls-client')
@@ -62,14 +70,15 @@ class TestCommunication(unittest.TestCase):
         server_bridge.sender.noop()
 
     def test_main_start(self):
-        core_user = UserImpl(name='Core User', age=2**32-1)
+        main = MainImpl()
         client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
-        server_bridge = Bridge(self.schema, self.stream2, self.stream1, core_user)
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main)
 
         Thread(target=client_bridge.receiver.mainloop).start()
         Thread(target=server_bridge.receiver.mainloop).start()
 
-        self.assertEqual(core_user.age, client_bridge.server.GetAge())
+        first_user = client_bridge.server.GetFirstUser()
+        self.assertEqual(main.first_user.age, first_user.GetAge())
 
         client_bridge.receiver.exit_mainloop = True
         server_bridge.receiver.exit_mainloop = True

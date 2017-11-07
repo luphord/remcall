@@ -19,7 +19,8 @@ class TestSchema(unittest.TestCase):
             Method('GetAge', [], uint32),
             Method('GetStatus', [], Status)
         ]
-        self.user_schema = Schema('MySchema', [Array(User), User, Array(Status), Status, Interface('Test', [])])
+        Main = Interface('Main', [Method('GetFirstUser', [], User)])
+        self.user_schema = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [])])
 
     def test_csharp_generation(self):
         generator = CSharphCodeGenerator(self.user_schema)
