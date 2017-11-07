@@ -77,7 +77,7 @@ class Receiver(ReaderBase):
         log(DEBUG, 'Processing next command on stream {}'.format(self._instream))
         cmd = self.read_from_stream(1)
         if cmd == NOOP:
-            return
+            log(DEBUG, 'Received NOOP command, doing nothing')
         elif cmd == REQUEST_SCHEMA:
             self.send_schema()
         elif cmd == SEND_SCHEMA:

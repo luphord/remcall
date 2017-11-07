@@ -2,7 +2,6 @@ import unittest
 from remcall import schema_from_bytes, Bridge
 from remcall.communication.proxy import create_proxy_classes_dict
 from remcall.communication.util import QueueStream
-from threading import Thread
 
 #import logging
 #logging.basicConfig(level=logging.DEBUG)
@@ -54,8 +53,8 @@ class TestCommunication(unittest.TestCase):
     def test_basic_communication(self):
         client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
         server_bridge = Bridge(self.schema, self.stream2, self.stream1, "not-required-here")
-        Thread(target=client_bridge.receiver.mainloop).start()
-        Thread(target=server_bridge.receiver.mainloop).start()
+        client_bridge.mainloop_thread.start()
+        server_bridge.mainloop_thread.start()
 
         brian = UserImpl(name='Brian', age=29)
         brian_id = server_bridge.store.get_id_for_object(brian)
@@ -74,8 +73,8 @@ class TestCommunication(unittest.TestCase):
         client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
         server_bridge = Bridge(self.schema, self.stream2, self.stream1, main)
 
-        Thread(target=client_bridge.receiver.mainloop).start()
-        Thread(target=server_bridge.receiver.mainloop).start()
+        client_bridge.mainloop_thread.start()
+        server_bridge.mainloop_thread.start()
 
         first_user = client_bridge.server.GetFirstUser()
         self.assertEqual(main.first_user.age, first_user.GetAge())

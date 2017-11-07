@@ -5,6 +5,7 @@ from .send import Sender
 from .store import ReferenceStore
 from .proxy import ProxyFactory
 from ..schema import Type
+from threading import Thread
 
 class Bridge:
     def __init__(self, schema, instream, outstream, main):
@@ -23,6 +24,8 @@ class Bridge:
             assert main_id == 1, 'ID of main object is {} but should be 1 on server'.format(main_id)
         if self.is_client:
             self.server = self.receiver.get_object(1, schema.main_type)
+        self.mainloop = self.receiver.mainloop
+        self.mainloop_thread = Thread(target=self.mainloop)
 
     def call_method(self, method, this, args_dict):
         request_id = self.sender.call_method(method, this, args_dict)
