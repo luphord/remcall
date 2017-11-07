@@ -147,8 +147,10 @@ class Schema:
         if sha256_digest:
             assert len(sha256_digest) == 32, 'SHA256 digest must be 32 bytes long'
         self.sha256_digest = sha256_digest
-        assert hasattr(self.type_schemas, 'Main'), 'Every schema requires an interface called "Main", got only {}'.format(ifc.name for ifc in self.interfaces_sorted)
+        assert hasattr(self.type_schemas, 'Main'), 'Every schema requires an interface called "Main", got only {}'.format(', '.join('"{}"'.format(ifc.name) for ifc in self.interfaces_sorted))
         self.main_type = self.type_schemas.Main
+        for ifc in self.interfaces_sorted:
+            assert len(ifc.methods) > 0, 'Every interface requires at least one method, "{}" has none'.format(ifc.name)
 
     @property
     def iter_declared_types(self):

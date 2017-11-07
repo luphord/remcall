@@ -20,7 +20,7 @@ class TestSchema(unittest.TestCase):
             Method('GetStatus', [], Status)
         ]
         Main = Interface('Main', [Method('GetFirstUser', [], User)])
-        self.user_schema = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [])])
+        self.user_schema = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [Method('DoNothing', [], void)])])
 
     def test_csharp_generation(self):
         generator = CSharphCodeGenerator(self.user_schema)

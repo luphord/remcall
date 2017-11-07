@@ -26,11 +26,15 @@ class TestSchema(unittest.TestCase):
             Method('GetStatus', [], Status)
         ]
         Main = Interface('Main', [Method('GetFirstUser', [], User)])
-        self.user_schema = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [])])
+        self.user_schema = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [Method('DoNothing', [], void)])])
 
     def test_missing_main(self):
         with self.assertRaises(AssertionError):
             Schema('NoMainSchema', [Interface('SomeInterface', [Method('DoSomething', [], void)])])
+
+    def test_missing_methods(self):
+        with self.assertRaises(AssertionError):
+            Schema('NoMethodsInterfaceSchema', [Interface('Main', [])])
 
     def test_user_reserialization(self):
         self.reserialize_and_check(self.user_schema)
@@ -42,6 +46,9 @@ class TestSchema(unittest.TestCase):
             f.seek(0)
             schema_read = read_schema(f)
             self.assertEqual(schema_to_bytes(self.user_schema), schema_to_bytes(schema_read))
+        #with open('schema', mode='wb') as f:
+        #    import base64
+        #    f.write(base64.encodebytes(schema_to_bytes(self.user_schema)))
 
     def test_bad_stream_reading(self):
         from remcall.codec.util import WrongNumberOfBytesRead
