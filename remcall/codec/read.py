@@ -37,7 +37,7 @@ class ReaderBase:
 
     def read_constant(self, bytes_const: bytes):
         bts = self.read_from_stream(len(bytes_const))
-        assert bts == bytes_const, 'Expecting {} at offset 0x{:x}, got {}'.format(bytes_const, self.idx - len(bytes_const), bts)
+        assert bts == bytes_const, 'Expecting {} at offset 0x{:x}, got {}'.format(bytes_const, self._idx - len(bytes_const), bts)
 
     def read_struct_format(self, fmt):
         size = struct.calcsize(fmt)

@@ -46,7 +46,7 @@ class TestSchema(unittest.TestCase):
             f.seek(0)
             schema_read = read_schema(f)
             self.assertEqual(schema_to_bytes(self.user_schema), schema_to_bytes(schema_read))
-        #with open('schema', mode='wb') as f:
+        #with open('schema.rmc', mode='wb') as f:
         #    import base64
         #    f.write(base64.encodebytes(schema_to_bytes(self.user_schema)))
 
