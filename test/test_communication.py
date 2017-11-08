@@ -70,14 +70,11 @@ class TestCommunication(unittest.TestCase):
         main = MainImpl()
         client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
         server_bridge = Bridge(self.schema, self.stream2, self.stream1, main)
-
-        client_bridge.mainloop_thread.start()
         server_bridge.mainloop_thread.start()
 
-        first_user = client_bridge.server.GetFirstUser()
-        self.assertEqual(main.first_user.age, first_user.GetAge())
-
-        client_bridge.disconnect()
+        with client_bridge:
+            first_user = client_bridge.server.GetFirstUser()
+            self.assertEqual(main.first_user.age, first_user.GetAge())
 
     def test_unknown_command(self):
         from io import BytesIO

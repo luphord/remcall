@@ -27,6 +27,12 @@ class Bridge:
         self.mainloop = self.receiver.mainloop
         self.mainloop_thread = Thread(target=self.mainloop)
 
+    def __enter__(self):
+        self.mainloop_thread.start()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
+
     def call_method(self, method, this, args_dict):
         request_id = self.sender.call_method(method, this, args_dict)
         return self.receiver.wait_for_method_return(request_id, method.return_type)
