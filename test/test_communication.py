@@ -1,7 +1,7 @@
 import unittest
-from remcall import schema_from_bytes, Bridge
+from remcall import schema_from_bytes, Bridge, Receiver
 from remcall.communication.proxy import create_proxy_classes_dict
-from remcall.communication.util import QueueStream
+from remcall.communication.util import QueueStream, UnknownCommand
 
 #import logging
 #logging.basicConfig(level=logging.DEBUG)
@@ -78,6 +78,12 @@ class TestCommunication(unittest.TestCase):
         self.assertEqual(main.first_user.age, first_user.GetAge())
 
         client_bridge.disconnect()
+
+    def test_unknown_command(self):
+        from io import BytesIO
+        receiver = Receiver(self.schema, BytesIO(b'\xff'), None, None, None)
+        with self.assertRaises(UnknownCommand):
+            receiver.mainloop()
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ from ..schema import *
 from ..codec.read import ReaderBase
 from ..codec.util import WrongNumberOfBytesRead, view_hex
 from ..codec.write import SchemaWriter, schema_to_bytes
-from .util import MethodNotAvailable, DuplicateRegistrationForMethodReturn, DuplicateMethodReturnValue, MissingMethodReturnValueEvent
+from .util import UnknownCommand, MethodNotAvailable, DuplicateRegistrationForMethodReturn, DuplicateMethodReturnValue, MissingMethodReturnValueEvent
 
 class Receiver(ReaderBase):
     def __init__(self, schema, instream, get_object, return_method_result, acknowledge_disconnect):
@@ -95,9 +95,7 @@ class Receiver(ReaderBase):
         elif cmd == RETURN_FROM_METHOD:
             self.process_method_return()
         else:
-            msg = 'Unknown command {}'.format(view_hex(cmd))
-            log(ERROR, msg)
-            raise Exception(msg)
+            raise UnknownCommand(cmd)
 
     def process_method_call(self):
         request_id = self.read_request_id()

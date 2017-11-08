@@ -1,5 +1,6 @@
 from .. import RemcallError
 from queue import Queue
+from ..codec.util import view_hex
 
 class QueueStream:
     stream_counter = 0
@@ -22,6 +23,11 @@ class QueueStream:
 
     def flush(self):
         pass
+
+class UnknownCommand(RemcallError):
+    def __init__(self, command):
+        super().__init__('Unknown command "{}"'.format(view_hex(command)))
+        self.command = command
 
 class UnknownType(RemcallError):
     def __init__(self, typ):
