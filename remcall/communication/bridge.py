@@ -9,7 +9,7 @@ from threading import Thread
 
 class Bridge:
     def __init__(self, schema, instream, outstream, main):
-        self.receiver = Receiver(schema, instream, None, self.return_method)
+        self.receiver = Receiver(schema, instream, None, self.return_method, self.acknowledge_disconnect)
         self.sender = Sender(schema, outstream, None)
         self.proxy_factory = ProxyFactory(schema, self)
         self.main = main
@@ -33,3 +33,9 @@ class Bridge:
 
     def return_method(self, request_id: int, return_type: Type, return_value):
         self.sender.return_method(request_id, return_type, return_value)
+
+    def disconnect(self):
+        self.sender.disconnect()
+
+    def acknowledge_disconnect(self):
+        self.sender.acknowledge_disconnect()

@@ -1,3 +1,5 @@
+from binascii import hexlify
+
 class RemcallError(Exception):
     pass
 
@@ -10,3 +12,6 @@ class WrongNumberOfBytesRead(RemcallError):
         self.bytes_requested = bytes_requested
         self.bytes_read = bytes_read
         self.offset = offset
+
+def view_hex(b: bytes):
+    return '0x{}'.format(hexlify(b).decode('ascii'))

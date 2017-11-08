@@ -5,12 +5,12 @@ from binascii import hexlify
 from .base import *
 from ..schema import *
 from ..codec.read import ReaderBase
-from ..codec.util import WrongNumberOfBytesRead
+from ..codec.util import WrongNumberOfBytesRead, view_hex
 from ..codec.write import SchemaWriter, schema_to_bytes
 from .util import MethodNotAvailable, DuplicateRegistrationForMethodReturn, DuplicateMethodReturnValue, MissingMethodReturnValueEvent
 
 class Receiver(ReaderBase):
-    def __init__(self, schema, instream, get_object, return_method_result):
+    def __init__(self, schema, instream, get_object, return_method_result, acknowledge_disconnect):
         super().__init__(instream)
         self.schema = schema
         self.method_lookup = self.schema.method_lookup
@@ -20,6 +20,7 @@ class Receiver(ReaderBase):
         self.method_return_events = {}
         self.method_return_values = {}
         self.return_method_result = return_method_result
+        self.acknowledge_disconnect = acknowledge_disconnect
 
         self._read_value_functions = {
             int8: self.read_int8,
@@ -78,6 +79,13 @@ class Receiver(ReaderBase):
         cmd = self.read_from_stream(1)
         if cmd == NOOP:
             log(DEBUG, 'Received NOOP command, doing nothing')
+        elif cmd == DISCONNECT:
+            log(DEBUG, 'Received DISCONNECT command, exiting mainloop')
+            self.exit_mainloop = True
+            self.acknowledge_disconnect()
+        elif cmd == ACKNOWLEDGE_DISCONNECT:
+            log(DEBUG, 'Received ACKNOWLEDGE_DISCONNECT command, exiting mainloop')
+            self.exit_mainloop = True
         elif cmd == REQUEST_SCHEMA:
             self.send_schema()
         elif cmd == SEND_SCHEMA:

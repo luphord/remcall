@@ -63,10 +63,8 @@ class TestCommunication(unittest.TestCase):
         _client_u = ClientUserImpl()
         brian_proxy.AddFriend(_client_u, 1.1)
         self.assertEqual(1, len(brian.friends))
-        client_bridge.receiver.exit_mainloop = True
-        server_bridge.receiver.exit_mainloop = True
-        client_bridge.sender.noop()
-        server_bridge.sender.noop()
+
+        client_bridge.disconnect()
 
     def test_main_start(self):
         main = MainImpl()
@@ -79,10 +77,7 @@ class TestCommunication(unittest.TestCase):
         first_user = client_bridge.server.GetFirstUser()
         self.assertEqual(main.first_user.age, first_user.GetAge())
 
-        client_bridge.receiver.exit_mainloop = True
-        server_bridge.receiver.exit_mainloop = True
-        client_bridge.sender.noop()
-        server_bridge.sender.noop()
+        client_bridge.disconnect()
 
 
 if __name__ == '__main__':
