@@ -225,7 +225,7 @@ class Schema:
         return mi
 
     def pretty_print(self):
-        return '\n'.join(typ.pretty_print() for typ in self.declared_types)
+        return '\n\n'.join(typ.pretty_print() for typ in self.declared_types)
 
     def __repr__(self):
         return '{}(label="{}", types={!r})'.format(self.__class__.__name__, self.label, self.types)
