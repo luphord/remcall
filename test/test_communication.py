@@ -68,11 +68,10 @@ class TestCommunication(unittest.TestCase):
 
     def test_main_start(self):
         main = MainImpl()
-        client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
         server_bridge = Bridge(self.schema, self.stream2, self.stream1, main)
         server_bridge.mainloop_thread.start()
 
-        with client_bridge:
+        with Bridge(self.schema, self.stream1, self.stream2, None) as client_bridge:
             first_user = client_bridge.server.GetFirstUser()
             self.assertEqual(main.first_user.age, first_user.GetAge())
 

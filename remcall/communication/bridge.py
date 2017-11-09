@@ -29,6 +29,7 @@ class Bridge:
 
     def __enter__(self):
         self.mainloop_thread.start()
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
