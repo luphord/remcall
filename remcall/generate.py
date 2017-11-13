@@ -43,8 +43,12 @@ class CSharphCodeGenerator:
         if self._indent < 0:
             raise RemcallError('Trying to create negative indent')
 
-    def typename(self, typ):
+    def scalartypename(self, typ):
+        assert not isinstance(typ, schema.Array)
         return self.type_names[typ] if typ in self.type_names else typ.name
+
+    def typename(self, typ):
+        return '{}[]'.format(self.scalartypename(typ.typ)) if isinstance(typ, schema.Array) else self.scalartypename(typ)
 
     def write_schema(self, fp):
         self.outfile = fp
