@@ -11,6 +11,8 @@ class TestFileSystemSchema(unittest.TestCase):
             schema2 = read_schema(stream)
         serialized_schema2 = schema_to_bytes(schema2)
         self.assertEqual( serialized_schema, serialized_schema2 )
+        #with open('fs.rmc', 'wb') as f:
+        #    f.write(serialized_schema2)
 
     def setUp(self):
         File = Interface('File', [])
@@ -22,8 +24,11 @@ class TestFileSystemSchema(unittest.TestCase):
             Method('SetName', [(string, 'name')], void),
             Method('GetCreationTime', [], datetime),
             Method('GetModificationTime', [], datetime),
-            Method('Open', [(Mode, 'mode')], FileStream),
             Method('GetDirectory', [], Directory),
+            Method('Open', [(Mode, 'mode')], FileStream),
+            Method('Delete', [], void),
+            Method('Move', [(Directory, 'directory')], void),
+            Method('Copy', [(Directory, 'directory')], void),
         ]
         FileStream.methods = [
             Method('Seek', [(uint64, 'offset')], void),
