@@ -10,7 +10,7 @@ from ..naming import PythonNameConverter
 
 class Bridge:
     def __init__(self, schema, instream, outstream, main, name_converter=PythonNameConverter()):
-        self.receiver = Receiver(schema, instream, None, self.return_method, self.acknowledge_disconnect)
+        self.receiver = Receiver(schema, instream, None, self.return_method, self.acknowledge_disconnect, name_converter)
         self.sender = Sender(schema, outstream, None)
         self.proxy_factory = ProxyFactory(schema, self, name_converter)
         self.main = main

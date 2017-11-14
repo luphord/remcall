@@ -12,10 +12,10 @@ class UserImpl:
         self.age = age
         self.friends = {}
 
-    def GetAge(self):
+    def get_age(self):
         return self.age
 
-    def AddFriend(self, user, degree):
+    def add_friend(self, user, degree):
         #print('Adding {} as a friend of degree {}'.format(user, degree))
         #print('Age of {} is {}'.format(user, user.GetAge()))
         #print('Adding friend completed')
@@ -25,11 +25,11 @@ class MainImpl:
     def __init__(self):
         self.first_user = UserImpl('First User', 2**32-1)
 
-    def GetFirstUser(self):
+    def get_first_user(self):
         return self.first_user
 
 class ClientUserImpl:
-    def GetAge(self):
+    def get_age(self):
         return 666
 
 class TestCommunication(unittest.TestCase):
@@ -77,7 +77,7 @@ class TestCommunication(unittest.TestCase):
 
     def test_unknown_command(self):
         from io import BytesIO
-        receiver = Receiver(self.schema, BytesIO(b'\xff'), None, None, None)
+        receiver = Receiver(self.schema, BytesIO(b'\xff'), None, None, None, None)
         with self.assertRaises(UnknownCommand):
             receiver.mainloop()
 

@@ -10,7 +10,7 @@ from ..codec.write import SchemaWriter, schema_to_bytes
 from .util import UnknownCommand, MethodNotAvailable, DuplicateRegistrationForMethodReturn, DuplicateMethodReturnValue, MissingMethodReturnValueEvent
 
 class Receiver(ReaderBase):
-    def __init__(self, schema, instream, get_object, return_method_result, acknowledge_disconnect):
+    def __init__(self, schema, instream, get_object, return_method_result, acknowledge_disconnect, name_converter):
         super().__init__(instream)
         self.schema = schema
         self.method_lookup = self.schema.method_lookup
@@ -21,6 +21,7 @@ class Receiver(ReaderBase):
         self.method_return_values = {}
         self.return_method_result = return_method_result
         self.acknowledge_disconnect = acknowledge_disconnect
+        self.name_converter = name_converter
 
         self._read_value_functions = {
             int8: self.read_int8,
@@ -105,10 +106,11 @@ class Receiver(ReaderBase):
         method = self.method_lookup[method_ref]
         log(DEBUG, 'Found method {}'.format(method))
         this = self.read_object(self.method_to_interface[method_ref])
+        impl_method_name = self.name_converter.method_name(method.name)
         try:
-            method_impl = getattr(this, method.name)
+            method_impl = getattr(this, impl_method_name)
         except AttributeError:
-            raise MethodNotAvailable(method, this)
+            raise MethodNotAvailable(method, impl_method_name, this)
         args = {}
         for typ, name in method.arguments:
             args[name] = self.read_value(typ)

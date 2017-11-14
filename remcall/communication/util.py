@@ -45,9 +45,10 @@ class UnknownImplementationObjectReference(RemcallError):
         self.object_id = key
 
 class MethodNotAvailable(RemcallError):
-    def __init__(self, method, this):
-        super().__init__('Method {} does not exist on object {}'.format(method.name, this))
+    def __init__(self, method, impl_method_name, this):
+        super().__init__('Method {} with expected implementation name {} does not exist on object {}'.format(method.name, impl_method_name, this))
         self.method = method
+        self.impl_method_name = impl_method_name
         self.this = this
 
 
