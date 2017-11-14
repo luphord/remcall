@@ -1,3 +1,5 @@
+from .schema import Type, Interface, Enum, Record
+
 class IdentityNameConverter:
     def interface_name(self, name):
         return name
@@ -19,6 +21,16 @@ class IdentityNameConverter:
 
     def record_field_name(self, name):
         return name
+
+    def type_name(self, typ: Type):
+        if isinstance(typ, Interface):
+            return self.interface_name(typ.name)
+        elif isinstance(typ, Enum):
+            return self.enum_name(typ.name)
+        elif isinstance(typ, Record):
+            return self.record_name(typ.name)
+        else:
+            raise ValueError('No name for {!r}'.format(typ))
 
 class PythonNameConverter(IdentityNameConverter):
     def _iter_method_name(self, name):

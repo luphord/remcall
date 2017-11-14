@@ -1,5 +1,6 @@
 from . import schema
 from .communication.util import RemcallError
+from .naming import CSharpNameConverter
 
 class CSharphCodeGenerator:
 
@@ -23,9 +24,10 @@ class CSharphCodeGenerator:
         schema.datetime: 'DateTime'
     }
 
-    def __init__(self, schema, namespace='Remcall.Generated'):
+    def __init__(self, schema, namespace='Remcall.Generated', name_converter = CSharpNameConverter()):
         self.schema = schema
         self.namespace = namespace
+        self.name_converter = name_converter
         self._indent = 0
         self.outfile = None
 
@@ -45,7 +47,10 @@ class CSharphCodeGenerator:
 
     def scalartypename(self, typ):
         assert not isinstance(typ, schema.Array)
-        return self.type_names[typ] if typ in self.type_names else typ.name
+        if isinstance(typ, schema.Primitive):
+            return self.type_names[typ]
+        else:
+            return self.name_converter.type_name(typ)
 
     def typename(self, typ):
         return '{}[]'.format(self.scalartypename(typ.typ)) if isinstance(typ, schema.Array) else self.scalartypename(typ)
@@ -71,13 +76,16 @@ class CSharphCodeGenerator:
         self.writeline('}')
 
     def write_enum(self, enum):
-        self.writeline('enum {} {{ {} }}'.format(self.typename(enum), ', '.join(enum.values)))
+        enum_name = self.scalartypename(enum)
+        enum_values = [self.name_converter.enum_field_name(v) for v in enum.values]
+        self.writeline('enum {} {{ {} }}'.format(enum_name, ', '.join(enum_values)))
 
     def write_record(self, record):
         raise NotImplementedError()
 
     def write_interface(self, interface):
-        self.writeline('interface {} {{'.format(self.typename(interface)))
+        interface_name = self.scalartypename(interface)
+        self.writeline('interface {} {{'.format(interface_name))
         self.indent()
         for method in interface.methods_sorted:
             self.write_method(method)
@@ -85,5 +93,7 @@ class CSharphCodeGenerator:
         self.writeline('}')
 
     def write_method(self, method):
+        method_name = self.name_converter.method_name(method.name)
+        args = ['{!s} {}'.format(self.typename(typ), self.name_converter.parameter_name(name)) for typ, name in method.arguments]
         ret = self.typename(method.return_type)
-        self.writeline('{} {}({});'.format(ret, method.name, ', '.join('{!s} {}'.format(self.typename(typ), name) for typ, name in method.arguments)))
+        self.writeline('{} {}({});'.format(ret, method.name, ', '.join(args)))
