@@ -1,6 +1,6 @@
 import unittest
 
-from remcall.naming import PythonNameConverter
+from remcall.naming import PythonNameConverter, CSharpNameConverter
 
 
 class TestSchema(unittest.TestCase):
@@ -13,3 +13,14 @@ class TestSchema(unittest.TestCase):
         self.assertEqual('some_record_field', nc.record_field_name('SomeRecordField'))
         self.assertEqual('do_nothing', nc.method_name('DoNothing'))
         self.assertEqual('some_param', nc.parameter_name('someParam'))
+
+    def test_csharp_name_conversion(self):
+        nc = CSharpNameConverter()
+        self.assertEqual('MyCamelCaseClass', nc.interface_name('MyCamelCaseClass'))
+        self.assertEqual('AStatusEnum', nc.enum_name('AStatusEnum'))
+        self.assertEqual('SomeEnumField', nc.enum_field_name('SomeEnumField'))
+        self.assertEqual('MyRecord', nc.record_name('MyRecord'))
+        self.assertEqual('SomeRecordField', nc.record_field_name('SomeRecordField'))
+        self.assertEqual('DoNothing', nc.method_name('DoNothing'))
+        self.assertEqual('someParam', nc.parameter_name('someParam'))
+        self.assertEqual('someParam', nc.parameter_name('SomeParam'))
