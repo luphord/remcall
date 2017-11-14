@@ -6,12 +6,13 @@ from .store import ReferenceStore
 from .proxy import ProxyFactory
 from ..schema import Type
 from threading import Thread
+from ..naming import PythonNameConverter
 
 class Bridge:
-    def __init__(self, schema, instream, outstream, main):
+    def __init__(self, schema, instream, outstream, main, name_converter=PythonNameConverter()):
         self.receiver = Receiver(schema, instream, None, self.return_method, self.acknowledge_disconnect)
         self.sender = Sender(schema, outstream, None)
-        self.proxy_factory = ProxyFactory(schema, self)
+        self.proxy_factory = ProxyFactory(schema, self, name_converter)
         self.main = main
         self.is_client = main is None
         self.store = ReferenceStore(self.is_client, self.proxy_factory)

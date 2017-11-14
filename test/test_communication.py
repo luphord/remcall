@@ -19,7 +19,7 @@ class UserImpl:
         #print('Adding {} as a friend of degree {}'.format(user, degree))
         #print('Age of {} is {}'.format(user, user.GetAge()))
         #print('Adding friend completed')
-        self.friends[user] = (degree, user.GetAge())
+        self.friends[user] = (degree, user.get_age())
 
 class MainImpl:
     def __init__(self):
@@ -59,9 +59,9 @@ class TestCommunication(unittest.TestCase):
         brian = UserImpl(name='Brian', age=29)
         brian_id = server_bridge.store.get_id_for_object(brian)
         brian_proxy = client_bridge.store.get_object(brian_id, self.schema.type_schemas.User) #UserProxy()
-        self.assertEqual(brian.age, brian_proxy.GetAge())
+        self.assertEqual(brian.age, brian_proxy.get_age())
         _client_u = ClientUserImpl()
-        brian_proxy.AddFriend(_client_u, 1.1)
+        brian_proxy.add_friend(_client_u, 1.1)
         self.assertEqual(1, len(brian.friends))
 
         client_bridge.disconnect()
@@ -72,8 +72,8 @@ class TestCommunication(unittest.TestCase):
         server_bridge.mainloop_thread.start()
 
         with Bridge(self.schema, self.stream1, self.stream2, None) as client_bridge:
-            first_user = client_bridge.server.GetFirstUser()
-            self.assertEqual(main.first_user.age, first_user.GetAge())
+            first_user = client_bridge.server.get_first_user()
+            self.assertEqual(main.first_user.age, first_user.get_age())
 
     def test_unknown_command(self):
         from io import BytesIO
