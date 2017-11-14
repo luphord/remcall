@@ -30,8 +30,10 @@ class TestSchema(unittest.TestCase):
 
     def test_csharp_names(self):
         generator = CSharphCodeGenerator(self.user_schema)
-        self.assertEqual('User', generator.typename(self.user_schema.type_schemas.User))
-        self.assertEqual('User[]', generator.typename(Array(self.user_schema.type_schemas.User)))
+        self.assertEqual('Status', generator.typename(self.user_schema.type_schemas.Status))
+        self.assertEqual('Status[]', generator.typename(Array(self.user_schema.type_schemas.Status)))
+        self.assertEqual('IUser', generator.typename(self.user_schema.type_schemas.User))
+        self.assertEqual('IUser[]', generator.typename(Array(self.user_schema.type_schemas.User)))
         self.assertEqual('string', generator.typename(string))
         self.assertEqual('string[]', generator.typename(Array(string)))
 
