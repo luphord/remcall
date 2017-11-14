@@ -33,6 +33,9 @@ class PythonNameConverter(IdentityNameConverter):
     def parameter_name(self, name):
         return self.method_name(name)
 
+    def enum_field_name(self, name):
+        return self.method_name(name).upper()
+
     def record_field_name(self, name):
         return self.method_name(name)
 
