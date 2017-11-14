@@ -17,7 +17,7 @@ class TestSchema(unittest.TestCase):
 
     def test_csharp_name_conversion(self):
         nc = CSharpNameConverter()
-        self.assertEqual('MyCamelCaseInterface', nc.interface_name('MyCamelCaseInterface'))
+        self.assertEqual('IMyCamelCaseInterface', nc.interface_name('MyCamelCaseInterface'))
         self.assertEqual('AStatusEnum', nc.enum_name('AStatusEnum'))
         self.assertEqual('SomeEnumField', nc.enum_field_name('SomeEnumField'))
         self.assertEqual('MyRecord', nc.record_name('MyRecord'))

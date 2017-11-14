@@ -40,5 +40,8 @@ class PythonNameConverter(IdentityNameConverter):
         return self.method_name(name)
 
 class CSharpNameConverter(IdentityNameConverter):
+    def interface_name(self, name):
+        return 'I{}'.format(super().interface_name(name))
+
     def parameter_name(self, name):
         return name[0].lower() + name[1:]
