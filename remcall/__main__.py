@@ -1,9 +1,25 @@
 from . import read_schema, schema_to_bytes
+from .schema import Schema
 from .generate import CSharphCodeGenerator
 
 def load_schema_from_file(fname):
     if fname.endswith('.py'):
-        raise NotImplementedError('Cannot load from python files yet')
+        with open(fname, mode='r') as f:
+            source = f.read()
+        globals_dict = {}
+        from . import schema
+        globals_dict.update(vars(schema))
+        exec(source, globals_dict)
+        schemas = []
+        for key, val in globals_dict.items():
+            if isinstance(val, Schema):
+                schemas.append(val)
+        if not schemas:
+            raise ValueError('No schema found in {}'.format(fname))
+        elif len(schemas) > 1:
+            raise ValueError('Multiple schemas found in {}: {}'.format(fname, [schema.label for schema in schemas]))
+        else:
+            return schemas[0]
     else:
         with open(fname, mode='rb') as f:
             return read_schema(f)
