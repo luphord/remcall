@@ -4,23 +4,25 @@ from remcall.schema import *
 from remcall import SchemaReader
 from remcall.generate import CSharphCodeGenerator
 
+Status = Enum('Status', ['Registered', 'Activated', 'Locked'])
+User = Interface('User', [])
+User.methods = [
+    Method('GetName', [], string),
+    Method('SetName', [(string, 'name')], void),
+    Method('GetBirthdate', [], date),
+    Method('GetLastLogin', [], datetime),
+    Method('GetFriends', [], Array(User)),
+    Method('AddFriend', [(User, 'user'), (float32, 'degree')], void),
+    Method('GetAge', [], uint32),
+    Method('GetStatus', [], Status)
+]
+Main = Interface('Main', [Method('GetFirstUser', [], User)])
+USER_SCHEMA = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [Method('DoNothing', [], void)])])
+
 class TestSchema(unittest.TestCase):
 
     def setUp(self):
-        Status = Enum('Status', ['Registered', 'Activated', 'Locked'])
-        User = Interface('User', [])
-        User.methods = [
-            Method('GetName', [], string),
-            Method('SetName', [(string, 'name')], void),
-            Method('GetBirthdate', [], date),
-            Method('GetLastLogin', [], datetime),
-            Method('GetFriends', [], Array(User)),
-            Method('AddFriend', [(User, 'user'), (float32, 'degree')], void),
-            Method('GetAge', [], uint32),
-            Method('GetStatus', [], Status)
-        ]
-        Main = Interface('Main', [Method('GetFirstUser', [], User)])
-        self.user_schema = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [Method('DoNothing', [], void)])])
+        self.user_schema = USER_SCHEMA
 
     def test_csharp_generation(self):
         generator = CSharphCodeGenerator(self.user_schema)
