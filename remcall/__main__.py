@@ -32,19 +32,20 @@ subparsers.required = True
 # Pretty print
 def print_schema(args):
     schema = load_schema_from_file(args.schema)
-    print(schema.pretty_print())
+    if args.base64:
+        import base64
+        print(base64.encodebytes(schema_to_bytes(schema)).decode('ascii'))
+    elif args.binary:
+        import sys
+        sys.stdout.buffer.write(schema_to_bytes(schema))
+        sys.stdout.flush()
+    else:
+        print(schema.pretty_print())
 print_parser = subparsers.add_parser('print', description='Pretty print a schema')
 print_parser.add_argument('schema')
+print_parser.add_argument('--base64', action='store_true', help='print serialized schema encoded in base64')
+print_parser.add_argument('--binary', action='store_true', help='print binary serliazed schema')
 print_parser.set_defaults(func=print_schema)
-
-# Encode base64
-def base64_schema(args):
-    schema = load_schema_from_file(args.schema)
-    import base64
-    print(base64.encodebytes(schema_to_bytes(schema)).decode('ascii'))
-base64_parser = subparsers.add_parser('base64', description='Encode a schema in base64')
-base64_parser.add_argument('schema')
-base64_parser.set_defaults(func=base64_schema)
 
 # Generate code
 def generate(args):
@@ -55,7 +56,7 @@ def generate(args):
         raise NotImplementedError('Would love to be able to generate code for {}'.format(args.language))
     import sys
     generator.write_schema(sys.stdout)
-generate_parser = subparsers.add_parser('generate', description='Generate code from schema')
+generate_parser = subparsers.add_parser('generate', aliases=['gen'], description='Generate code from schema')
 generate_parser.add_argument('-l', '--language', help='Programming language to create code for', default='csharp', type=str, choices=['c', 'csharp', 'go', 'java'])
 generate_parser.add_argument('-n', '--namespace', help='Namespace to create code in', default='Remcall.Generated', type=str)
 generate_parser.add_argument('schema')
