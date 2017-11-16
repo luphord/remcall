@@ -81,7 +81,14 @@ class CSharphCodeGenerator:
         self.writeline('enum {} {{ {} }}'.format(enum_name, ', '.join(enum_values)))
 
     def write_record(self, record):
-        raise NotImplementedError()
+        record_name = self.scalartypename(record)
+        fields = ['{} {};'.format(self.typename(typ), self.name_converter.record_field_name(name)) for typ, name in record.fields_sorted]
+        self.writeline('struct {} {{'.format(record_name))
+        self.indent()
+        for field in fields:
+            self.writeline(field)
+        self.dedent()
+        self.writeline('}')
 
     def write_interface(self, interface):
         interface_name = self.scalartypename(interface)
