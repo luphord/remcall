@@ -1,6 +1,6 @@
 import unittest
 import io
-from remcall.schema import Schema, Enum, Interface, Method, string, uint8, float32, uint32, int64, uint64, void, date, datetime, Array
+from remcall.schema import Schema, Enum, Record, Interface, Method, string, uint8, float32, uint32, int64, uint64, void, date, datetime, Array
 from remcall import SchemaReader, read_schema, SchemaWriter, schema_to_bytes
 
 File = Interface('File', [])

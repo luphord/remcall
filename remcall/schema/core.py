@@ -98,6 +98,7 @@ class Method:
         self.arguments = list(arguments)
         for typ, name in self.arguments:
             assert_name(name)
+            assert isinstance(typ, Type) or isinstance(typ, TypeRef), 'Type of argument {} is {} which is not an instance of Type'.format(name, typ)
         self.return_type = return_type
 
     def __str__(self) -> str:
