@@ -53,6 +53,12 @@ class TestSchema(unittest.TestCase):
         with self.assertRaises(AssertionError):
             Record('r', [('test', 'a')])
 
+    def test_void_arguments_or_fields(self):
+        with self.assertRaises(AssertionError):
+            Method('m', [(void, 'arg')], void)
+        with self.assertRaises(AssertionError):
+            Record('r', [(void, 'field')])
+
     def test_user_reserialization(self):
         self.reserialize_and_check(self.user_schema)
 

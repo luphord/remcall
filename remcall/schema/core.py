@@ -97,6 +97,7 @@ class Record(Type):
         for typ, name in self.fields:
             assert_name(name)
             assert_type_or_ref(typ)
+            assert typ is not void, 'Fields cannot be of type void'
 
     @property
     def is_declared(self) -> bool:
@@ -110,6 +111,7 @@ class Method:
         for typ, name in self.arguments:
             assert_name(name)
             assert_type_or_ref(typ)
+            assert typ is not void, 'Arguments cannot be of type void'
         self.return_type = return_type
 
     def __str__(self) -> str:
