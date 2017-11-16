@@ -4,6 +4,11 @@ from remcall.schema import Schema, Enum, Record, Interface, Method, string, uint
 from remcall import SchemaReader, read_schema, SchemaWriter, schema_to_bytes
 
 File = Interface('File', [])
+FileMetaData = Record('FileMetaData', [
+    (string, 'Name'),
+    (datetime, 'CreationTime'),
+    (datetime, 'ModificationTime')
+])
 Mode = Enum('Mode', ['Read', 'Write', 'Append'])
 FileStream = Interface('FileStream', [])
 Directory = Interface('Directory', [])

@@ -1,4 +1,4 @@
-from typing import Iterable, Tuple, Mapping
+from typing import Iterable, Tuple, Mapping, Union
 
 from .base import assert_name
 from .typeref import TypeRef
@@ -24,6 +24,10 @@ class Type:
 
     def resolve_type_references(self, type_ref_lookup):
         pass
+
+TypeOrRef = Union[Type, TypeRef]
+def assert_type_or_ref(typ: TypeOrRef):
+    assert isinstance(typ, Type) or isinstance(typ, TypeRef), '{} which not an instance of Type or TypeRef'.format(typ)
 
 class Array(Type):
     type_order = 3
@@ -87,18 +91,25 @@ class Enum(Type):
 class Record(Type):
     type_order = 1
 
+    def __init__(self, name: str, fields: Iterable[Tuple[TypeOrRef, str]]) -> None:
+        super().__init__(name)
+        self.fields = list(fields)
+        for typ, name in self.fields:
+            assert_name(name)
+            assert_type_or_ref(typ)
+
     @property
     def is_declared(self) -> bool:
         return True
 
 class Method:
-    def __init__(self, name: str, arguments: Iterable[Tuple[Type, str]], return_type: Type) -> None:
+    def __init__(self, name: str, arguments: Iterable[Tuple[TypeOrRef, str]], return_type: Type) -> None:
         assert_name(name)
         self.name = name
         self.arguments = list(arguments)
         for typ, name in self.arguments:
             assert_name(name)
-            assert isinstance(typ, Type) or isinstance(typ, TypeRef), 'Type of argument {} is {} which is not an instance of Type'.format(name, typ)
+            assert_type_or_ref(typ)
         self.return_type = return_type
 
     def __str__(self) -> str:

@@ -1,6 +1,6 @@
 import unittest
 import io
-from remcall.schema import Schema, Enum, Interface, Method, string, float32, uint32, void, date, datetime, Array
+from remcall.schema import Schema, Enum, Record, Interface, Method, string, float32, uint32, void, date, datetime, Array
 from remcall import SchemaReader, read_schema, SchemaWriter, schema_to_bytes
 
 Status = Enum('Status', ['Registered', 'Activated', 'Locked'])
@@ -38,6 +38,20 @@ class TestSchema(unittest.TestCase):
     def test_missing_methods(self):
         with self.assertRaises(AssertionError):
             Schema('NoMethodsInterfaceSchema', [Interface('Main', [])])
+
+    def test_bad_argument_definition(self):
+        with self.assertRaises(AssertionError):
+            Method('m', [(string, '')], void)
+        with self.assertRaises(AssertionError):
+            Method('m', [(string, '1a')], void)
+        with self.assertRaises(AssertionError):
+            Method('m', [('test', 'a')], void)
+        with self.assertRaises(AssertionError):
+            Record('r', [(string, '')])
+        with self.assertRaises(AssertionError):
+            Record('r', [(string, '1a')])
+        with self.assertRaises(AssertionError):
+            Record('r', [('test', 'a')])
 
     def test_user_reserialization(self):
         self.reserialize_and_check(self.user_schema)
