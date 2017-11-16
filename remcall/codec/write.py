@@ -5,6 +5,7 @@ from binascii import hexlify
 from logging import log, DEBUG, INFO, WARN, ERROR, CRITICAL
 
 from .base import *
+from .util import view_hex
 from ..schema import *
 
 class WriterBase:
@@ -77,7 +78,8 @@ class WriterBase:
         b = s.encode('utf8')
         self.write_bytes(b)
 
-    def write_type_ref(self, typ):
+    def write_type_ref(self, typ: Type):
+        assert isinstance(typ, Type), '{} is not an instance of Type'.format(typ)
         type_ref = self.type_table.get(typ)
         if type_ref is None:
             raise Exception('Trying to write type reference to unknown type {}'.format(typ))
@@ -114,6 +116,15 @@ class SchemaWriter(WriterBase):
         for value in enum.values:
             self.write_name(value)
 
+    def write_record(self, record):
+        self.write_to_stream(DECLARE_RECORD)
+        self.write_type_ref(record)
+        self.write_name(record.name)
+        self.write_uint32(len(record.fields))
+        for field_type, field_name in record.fields:
+            self.write_type_ref(field_type)
+            self.write_name(field_name)
+
     def write_method(self, method):
         self.write_method_ref(self._method_idx)
         self.write_name(method.name)
@@ -147,7 +158,7 @@ class SchemaWriter(WriterBase):
             if isinstance(typ, Enum):
                 self.write_enum(typ)
             elif isinstance(typ, Record):
-                pass
+                self.write_record(typ)
             elif isinstance(typ, Interface):
                 self.write_interface(typ)
             else:

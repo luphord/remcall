@@ -99,6 +99,14 @@ class Record(Type):
             assert_type_or_ref(typ)
             assert typ is not void, 'Fields cannot be of type void'
 
+    def resolve_type_references(self, type_ref_lookup: Mapping[TypeRef, Type]) -> None:
+        for field_idx, field in enumerate(list(self.fields)):
+            field_type, field_name = field
+            if isinstance(field_type, TypeRef):
+                actual_type = type_ref_lookup[field_type]
+                assert actual_type is not void, 'Fields cannot be of type void'
+                self.fields[field_idx] = (actual_type, field_name)
+
     @property
     def is_declared(self) -> bool:
         return True

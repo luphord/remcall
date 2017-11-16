@@ -36,7 +36,7 @@ Directory.methods = [
     Method('GetSubDirectories', [], Array(Directory)),
 ]
 Main = Interface('Main', [Method('GetRoot', [], Directory)])
-FS_SCHEMA = Schema('FileSystemSchema', [File, Mode, FileStream, Directory, Main])
+FS_SCHEMA = Schema('FileSystemSchema', [File, FileMetaData, Mode, FileStream, Directory, Main])
 
 class TestFileSystemSchema(unittest.TestCase):
 

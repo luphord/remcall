@@ -116,6 +116,16 @@ class SchemaReader(ReaderBase):
             values.append(self.read_name())
         return enum_type_ref, Enum(enum_name, values)
 
+    def read_record(self):
+        self.read_constant(DECLARE_RECORD)
+        record_type_ref = self.read_type_ref()
+        record_name = self.read_name()
+        field_count = self.read_uint32()
+        fields = []
+        for field_idx in range(field_count):
+            fields.append((self.read_type_ref(), self.read_name()))
+        return record_type_ref, Record(record_name, fields)
+
     def read_method(self):
         method_ref = self.read_unsigned_integer(self.bytes_method_ref)
         method_name = self.read_name()
@@ -154,6 +164,11 @@ class SchemaReader(ReaderBase):
             type_ref, enum = self.read_enum()
             assert type_ref not in types, 'Trying to specify enum {} twice before offset 0x{:x}'.format(type_ref, self.idx)
             types[type_ref] = enum
+
+        for record_idx in range(records_count):
+            type_ref, record = self.read_record()
+            assert type_ref not in types, 'Trying to specify record {} twice before offset 0x{:x}'.format(type_ref, self.idx)
+            types[type_ref] = record
 
         for interface_idx in range(interfaces_count):
             type_ref, interface = self.read_interface()
