@@ -121,7 +121,7 @@ class SchemaWriter(WriterBase):
         self.write_type_ref(record)
         self.write_name(record.name)
         self.write_uint32(len(record.fields))
-        for field_type, field_name in record.fields:
+        for field_type, field_name in record.fields_sorted:
             self.write_type_ref(field_type)
             self.write_name(field_name)
 
