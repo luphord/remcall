@@ -1,10 +1,11 @@
 import unittest
 import io
-from remcall.schema import Schema, Enum, Record, Interface, Method, string, float32, uint32, void, date, datetime, Array
+from remcall.schema import Schema, Enum, Record, Interface, Method, string, float32, uint32, uint16, void, date, datetime, Array
 from remcall import SchemaReader, read_schema, SchemaWriter, schema_to_bytes
 
 Status = Enum('Status', ['Registered', 'Activated', 'Locked'])
 User = Interface('User', [])
+Address = Record('Address', [(string, 'Street'), (uint16, 'Number')])
 User.methods = [
     Method('GetName', [], string),
     Method('SetName', [(string, 'name')], void),
@@ -13,10 +14,11 @@ User.methods = [
     Method('GetFriends', [], Array(User)),
     Method('AddFriend', [(User, 'user'), (float32, 'degree')], void),
     Method('GetAge', [], uint32),
-    Method('GetStatus', [], Status)
+    Method('GetStatus', [], Status),
+    Method('GetAddress', [], Address)
 ]
 Main = Interface('Main', [Method('GetFirstUser', [], User)])
-USER_SCHEMA = Schema('MySchema', [Main, Array(User), User, Array(Status), Status, Interface('Test', [Method('DoNothing', [], void)])])
+USER_SCHEMA = Schema('MySchema', [Main, Array(User), User, Address, Array(Status), Status, Interface('Test', [Method('DoNothing', [], void)])])
 
 
 class TestSchema(unittest.TestCase):
