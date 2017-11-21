@@ -1,7 +1,8 @@
 import unittest
 from remcall import schema_from_bytes, Bridge, Receiver
 from remcall.communication.proxy import create_proxy_classes_dict
-from remcall.util import QueueStream, UnknownCommand
+from remcall.util import QueueStream
+from remcall.error import UnknownCommand
 
 #import logging
 #logging.basicConfig(level=logging.DEBUG)

@@ -1,7 +1,7 @@
 import types
 from inspect import Signature, Parameter
 from ..schema import *
-from ..util import UnknownType
+from ..error import UnknownType
 
 class ProxyType:
     pass
