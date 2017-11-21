@@ -1,6 +1,6 @@
-from .. import RemcallError
+from . import RemcallError
 from queue import Queue
-from ..codec.util import view_hex
+from .codec.util import view_hex
 
 class QueueStream:
     stream_counter = 0

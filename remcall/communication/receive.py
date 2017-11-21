@@ -7,7 +7,7 @@ from ..schema import *
 from ..codec.read import ReaderBase
 from ..codec.util import WrongNumberOfBytesRead, view_hex
 from ..codec.write import SchemaWriter, schema_to_bytes
-from .util import UnknownCommand, MethodNotAvailable, DuplicateRegistrationForMethodReturn, DuplicateMethodReturnValue, MissingMethodReturnValueEvent
+from ..util import UnknownCommand, MethodNotAvailable, DuplicateRegistrationForMethodReturn, DuplicateMethodReturnValue, MissingMethodReturnValueEvent
 
 class Receiver(ReaderBase):
     def __init__(self, schema, instream, get_object, return_method_result, acknowledge_disconnect, name_converter):

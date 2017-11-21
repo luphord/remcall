@@ -1,5 +1,5 @@
 from . import schema
-from .communication.util import RemcallError
+from . import RemcallError
 from .naming import CSharpNameConverter
 
 class CSharphCodeGenerator:

@@ -1,7 +1,7 @@
 from logging import log, DEBUG
 from ..schema import Type
 from .proxy import ProxyType
-from .util import UnknownProxyObject, UnknownImplementationObjectReference
+from ..util import UnknownProxyObject, UnknownImplementationObjectReference
 
 class IdStore:
     def __init__(self):
