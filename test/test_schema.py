@@ -76,7 +76,7 @@ class TestSchema(unittest.TestCase):
         #    f.write(base64.encodebytes(schema_to_bytes(self.user_schema)))
 
     def test_bad_stream_reading(self):
-        from remcall.codec.util import WrongNumberOfBytesRead
+        from remcall.util import WrongNumberOfBytesRead
         reader = SchemaReader(io.BytesIO(b'123'))
         with self.assertRaises(WrongNumberOfBytesRead):
             reader.read_from_stream(4)

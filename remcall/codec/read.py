@@ -5,7 +5,7 @@ from threading import Thread, Event, Lock
 from logging import log, DEBUG, INFO, WARN, ERROR, CRITICAL
 
 from .base import *
-from .util import WrongNumberOfBytesRead
+from ..util import WrongNumberOfBytesRead
 from ..schema import *
 from ..schema.typeref import TypeRef
 from .write import SchemaWriter

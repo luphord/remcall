@@ -5,7 +5,7 @@ from binascii import hexlify
 from .base import *
 from ..schema import *
 from ..codec.write import WriterBase, SchemaWriter, schema_to_bytes
-from ..codec.util import view_hex
+from ..util import view_hex
 
 class Sender(WriterBase):
     def __init__(self, schema, outstream, get_id_for_object):

@@ -18,7 +18,7 @@ such as TCP sockets, stdin/out, websockets.
 '''
 
 from . import schema
-from .codec.util import RemcallError
+from .util import RemcallError
 from .codec.read import SchemaReader, read_schema, schema_from_bytes
 from .codec.write import SchemaWriter, write_schema, schema_to_bytes
 from .communication.bridge import Bridge

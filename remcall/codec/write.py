@@ -5,7 +5,7 @@ from binascii import hexlify
 from logging import log, DEBUG, INFO, WARN, ERROR, CRITICAL
 
 from .base import *
-from .util import view_hex
+from ..util import view_hex
 from ..schema import *
 
 class WriterBase:
