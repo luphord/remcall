@@ -4,9 +4,11 @@ from .receive import Receiver
 from .send import Sender
 from .store import ReferenceStore
 from .proxy import ProxyFactory
+from .implementation import EnumRecordFactory
 from ..schema import Type
 from threading import Thread
 from ..naming import PythonNameConverter
+
 
 class Bridge:
     def __init__(self, schema, instream, outstream, main, name_converter=PythonNameConverter()):
@@ -17,7 +19,8 @@ class Bridge:
         self.is_client = main is None
         self.store = ReferenceStore(self.is_client, self.proxy_factory)
         self.receiver.get_object = self.store.get_object
-        self.receiver.get_enum_implementation = lambda typ: self.proxy_factory.proxy_classes[typ] # todo: better api
+        self.implementation_types = EnumRecordFactory(schema, name_converter)
+        self.receiver.get_enum_implementation = self.implementation_types
         self.sender.get_id_for_object = self.store.get_id_for_object
         main_id = self.sender.get_id_for_object(self.main)
         if self.is_client:

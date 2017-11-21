@@ -53,21 +53,11 @@ def create_proxy_classes(schema, bridge):
 def create_proxy_classes_dict(schema, bridge, name_converter):
     return {cls.__name__: cls for cls in create_proxy_classes(schema, bridge, name_converter)}
 
-def create_enum_implementation(enum, name_converter):
-    name = name_converter.enum_name(enum.name)
-    enum_dict = {name_converter.enum_field_name(value): idx for idx, value in enumerate(enum.values)}
-    from enum import Enum # python stdlib Enum nameclash!
-    return Enum(name, enum_dict)
-
 class ProxyFactory:
     def __init__(self, schema, bridge, name_converter):
         self.proxy_classes = {}
         for interface in schema.interfaces:
             self.proxy_classes[interface] = create_proxy_class(interface, bridge, name_converter)
-         # todo: separate store for implementation objects
-        for enum in schema.enums:
-            self.proxy_classes[enum] = create_enum_implementation(enum, name_converter)
-
 
     def __call__(self, typ: Type):
         if not typ in self.proxy_classes:
