@@ -4,7 +4,7 @@ from .receive import Receiver
 from .send import Sender
 from .store import ReferenceStore
 from .proxy import ProxyFactory
-from .implementation import EnumRecordFactory
+from ..implementation import EnumRecordFactory
 from ..schema import Type
 from threading import Thread
 from ..naming import PythonNameConverter

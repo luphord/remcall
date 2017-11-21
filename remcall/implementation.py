@@ -1,5 +1,5 @@
 from enum import Enum
-from .util import UnknownType
+from .communication.util import UnknownType
 
 def create_enum_implementation(enum, name_converter):
     name = name_converter.enum_name(enum.name)
