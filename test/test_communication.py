@@ -3,6 +3,8 @@ from remcall import schema_from_bytes, Bridge, Receiver
 from remcall.communication.proxy import create_proxy_classes_dict
 from remcall.util import QueueStream
 from remcall.error import UnknownCommand
+from remcall.implementation import EnumRecordFactory
+from remcall.naming import PythonNameConverter
 
 #import logging
 #logging.basicConfig(level=logging.DEBUG)
@@ -64,8 +66,8 @@ class TestCommunication(unittest.TestCase):
         self.stream2 = QueueStream('client-calls-server')
 
     def test_basic_communication(self):
-        client_bridge = Bridge(self.schema, self.stream1, self.stream2, None)
-        server_bridge = Bridge(self.schema, self.stream2, self.stream1, "not-required-here")
+        client_bridge = Bridge(self.schema, self.stream1, self.stream2, None, None)
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, "not-required-here", None)
         client_bridge.mainloop_thread.start()
         server_bridge.mainloop_thread.start()
 
@@ -81,10 +83,10 @@ class TestCommunication(unittest.TestCase):
 
     def test_main_start(self):
         main = MainImpl()
-        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main)
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main, EnumRecordFactory(self.schema, PythonNameConverter()))
         server_bridge.mainloop_thread.start()
 
-        with Bridge(self.schema, self.stream1, self.stream2, None) as client_bridge:
+        with Bridge(self.schema, self.stream1, self.stream2, None, None) as client_bridge:
             first_user = client_bridge.server.get_first_user()
             self.assertEqual(main.first_user.age, first_user.get_age())
             first_user.get_status()

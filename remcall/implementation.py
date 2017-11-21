@@ -8,6 +8,7 @@ def create_enum_implementation(enum, name_converter):
 
 class EnumRecordFactory:
     def __init__(self, schema, name_converter):
+        self.name_converter = name_converter
         self.types = {}
         for enum in schema.enums:
             self.types[enum] = create_enum_implementation(enum, name_converter)
