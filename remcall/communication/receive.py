@@ -64,9 +64,15 @@ class Receiver(ReaderBase):
         log(DEBUG, 'Found object {}'.format(obj))
         return obj
 
+    def read_enum_value(self, typ: Type):
+        enum_value = self.read_uint32()
+        return self.get_enum_implementation(typ)(enum_value) # todo: better api
+
     def read_value(self, typ: Type):
         if isinstance(typ, Interface):
             return self.read_object(typ)
+        elif isinstance(typ, Enum):
+            return self.read_enum_value(typ)
         else:
             return self._read_value_functions[typ]()
 

@@ -17,6 +17,7 @@ class Bridge:
         self.is_client = main is None
         self.store = ReferenceStore(self.is_client, self.proxy_factory)
         self.receiver.get_object = self.store.get_object
+        self.receiver.get_enum_implementation = lambda typ: self.proxy_factory.proxy_classes[typ] # todo: better api
         self.sender.get_id_for_object = self.store.get_id_for_object
         main_id = self.sender.get_id_for_object(self.main)
         if self.is_client:

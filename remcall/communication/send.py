@@ -31,6 +31,8 @@ class Sender(WriterBase):
         }
         for interface in self.schema.interfaces:
             self._write_value_functions[interface] = self.write_object_ref
+        for enum in self.schema.enums:
+            self._write_value_functions[enum] = self.write_enum_value
 
     def write_to_stream(self, data: bytes):
         log(DEBUG, 'Writing data of length {} to stream: {}'.format(len(data), hexlify(data)))
@@ -53,6 +55,12 @@ class Sender(WriterBase):
     def write_object_ref(self, obj):
         oid = self.get_id_for_object(obj)
         self._write_signed_integer_functions[self.schema.bytes_object_ref](oid)
+
+    def write_enum_value(self, enum_value):
+        self.write_uint32(enum_value.value)
+
+    def write_record_value(self, val):
+        raise NotImplementedError('Writing records')
 
     def write_value(self, typ, value):
         self._write_value_functions[typ](value)

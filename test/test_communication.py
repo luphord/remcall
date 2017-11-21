@@ -21,6 +21,11 @@ dFN0YXR1cwAAAAAAAAAQAAoAAAAKR2V0QWRkcmVzcwAAAAAAAAARFMkyjcRCzj7DYZ5SzZdAy94d
 ''')
 SCHEMA = schema_from_bytes(serialized_schema)
 
+ # todo: remove and replace by generated implementation
+class EnumFake:
+    def __init__(self, value):
+        self.value = value
+
 class UserImpl:
     def __init__(self, name, age):
         self.name = name
@@ -29,6 +34,9 @@ class UserImpl:
 
     def get_age(self):
         return self.age
+
+    def get_status(self):
+        return EnumFake(0)
 
     def add_friend(self, user, degree):
         #print('Adding {} as a friend of degree {}'.format(user, degree))
@@ -78,6 +86,7 @@ class TestCommunication(unittest.TestCase):
         with Bridge(self.schema, self.stream1, self.stream2, None) as client_bridge:
             first_user = client_bridge.server.get_first_user()
             self.assertEqual(main.first_user.age, first_user.get_age())
+            first_user.get_status()
 
     def test_unknown_command(self):
         from io import BytesIO
