@@ -24,7 +24,7 @@ dFN0YXR1cwAAAAAAAAAQAAoAAAAKR2V0QWRkcmVzcwAAAAAAAAARFMkyjcRCzj7DYZ5SzZdAy94d
 ''')
 SCHEMA = schema_from_bytes(serialized_schema)
 enum_record_factory = EnumRecordFactory(SCHEMA, PythonNameConverter())
-Status = enum_record_factory.types[SCHEMA.type_schemas.Status]
+Status = enum_record_factory.impl.Status
 
 class UserImpl:
     def __init__(self, name, age):
