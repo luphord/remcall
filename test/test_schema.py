@@ -61,6 +61,11 @@ class TestSchema(unittest.TestCase):
         with self.assertRaises(AssertionError):
             Record('r', [(void, 'field')])
 
+    def test_too_many_enum_values(self):
+        Enum('e', ['value{}'.format(i) for i in range(256)])
+        with self.assertRaises(AssertionError):
+            Enum('e', ['value{}'.format(i) for i in range(257)])
+
     def test_user_reserialization(self):
         self.reserialize_and_check(self.user_schema)
 

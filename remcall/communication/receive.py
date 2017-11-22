@@ -65,7 +65,7 @@ class Receiver(ReaderBase):
         return obj
 
     def read_enum_value(self, typ: Type):
-        enum_value = self.read_uint32()
+        enum_value = self.read_uint8()
         return self.get_enum_implementation(typ)(enum_value) # todo: better api
 
     def read_value(self, typ: Type):

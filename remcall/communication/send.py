@@ -57,7 +57,7 @@ class Sender(WriterBase):
         self._write_signed_integer_functions[self.schema.bytes_object_ref](oid)
 
     def write_enum_value(self, enum_value):
-        self.write_uint32(enum_value.value)
+        self.write_uint8(enum_value.value)
 
     def write_record_value(self, val):
         raise NotImplementedError('Writing records')

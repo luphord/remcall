@@ -75,6 +75,7 @@ class Enum(Type):
     def __init__(self, name: str, values: Iterable[str]) -> None:
         super().__init__(name)
         self.values = list(values)
+        assert len(self.values) <= 256, 'Enums may contain at most 256 values, got {}'.format(len(self.values))
         for value in self.values:
             assert_name(value)
 
