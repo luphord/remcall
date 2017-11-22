@@ -36,7 +36,7 @@ class UserImpl:
         return self.age
 
     def get_status(self):
-        return Status.REGISTERED
+        return Status.ACTIVATED
 
     def add_friend(self, user, degree):
         #print('Adding {} as a friend of degree {}'.format(user, degree))
@@ -83,10 +83,10 @@ class TestCommunication(unittest.TestCase):
         server_bridge = Bridge(self.schema, self.stream2, self.stream1, main, enum_record_implementation)
         server_bridge.mainloop_thread.start()
 
-        with Bridge(self.schema, self.stream1, self.stream2, None, None) as client_bridge:
+        with Bridge(self.schema, self.stream1, self.stream2, None, enum_record_implementation) as client_bridge:
             first_user = client_bridge.server.get_first_user()
             self.assertEqual(main.first_user.age, first_user.get_age())
-            first_user.get_status()
+            self.assertEqual(first_user.get_status(), Status.ACTIVATED)
 
     def test_unknown_command(self):
         from io import BytesIO
