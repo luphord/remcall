@@ -23,11 +23,8 @@ dFN0YXR1cwAAAAAAAAAQAAoAAAAKR2V0QWRkcmVzcwAAAAAAAAARFMkyjcRCzj7DYZ5SzZdAy94d
 1GLcXw1fiChjAPOZETA=
 ''')
 SCHEMA = schema_from_bytes(serialized_schema)
-
- # todo: remove and replace by generated implementation
-class EnumFake:
-    def __init__(self, value):
-        self.value = value
+enum_record_factory = EnumRecordFactory(SCHEMA, PythonNameConverter())
+Status = enum_record_factory.types[SCHEMA.type_schemas.Status]
 
 class UserImpl:
     def __init__(self, name, age):
@@ -39,7 +36,7 @@ class UserImpl:
         return self.age
 
     def get_status(self):
-        return EnumFake(0)
+        return Status.REGISTERED
 
     def add_friend(self, user, degree):
         #print('Adding {} as a friend of degree {}'.format(user, degree))
@@ -83,7 +80,7 @@ class TestCommunication(unittest.TestCase):
 
     def test_main_start(self):
         main = MainImpl()
-        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main, EnumRecordFactory(self.schema, PythonNameConverter()))
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main, enum_record_factory)
         server_bridge.mainloop_thread.start()
 
         with Bridge(self.schema, self.stream1, self.stream2, None, None) as client_bridge:
