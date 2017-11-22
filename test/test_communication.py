@@ -3,7 +3,7 @@ from remcall import schema_from_bytes, Bridge, Receiver
 from remcall.communication.proxy import create_proxy_classes_dict
 from remcall.util import QueueStream
 from remcall.error import UnknownCommand
-from remcall.implementation import EnumRecordFactory
+from remcall.implementation import EnumRecordImplementation
 from remcall.naming import PythonNameConverter
 
 #import logging
@@ -23,8 +23,8 @@ dFN0YXR1cwAAAAAAAAAQAAoAAAAKR2V0QWRkcmVzcwAAAAAAAAARFMkyjcRCzj7DYZ5SzZdAy94d
 1GLcXw1fiChjAPOZETA=
 ''')
 SCHEMA = schema_from_bytes(serialized_schema)
-enum_record_factory = EnumRecordFactory(SCHEMA, PythonNameConverter())
-Status = enum_record_factory.impl.Status
+enum_record_implementation = EnumRecordImplementation(SCHEMA, PythonNameConverter())
+Status = enum_record_implementation.impl.Status
 
 class UserImpl:
     def __init__(self, name, age):
@@ -80,7 +80,7 @@ class TestCommunication(unittest.TestCase):
 
     def test_main_start(self):
         main = MainImpl()
-        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main, enum_record_factory)
+        server_bridge = Bridge(self.schema, self.stream2, self.stream1, main, enum_record_implementation)
         server_bridge.mainloop_thread.start()
 
         with Bridge(self.schema, self.stream1, self.stream2, None, None) as client_bridge:

@@ -7,7 +7,7 @@ def create_enum_implementation(enum, name_converter):
     enum_dict = {name_converter.enum_field_name(value): idx for idx, value in enumerate(enum.values)}
     return Enum(name, enum_dict) # Note: python stdlib Enum!
 
-class EnumRecordFactory:
+class EnumRecordImplementation:
     def __init__(self, schema, name_converter):
         self.name_converter = name_converter
         self.types = {}

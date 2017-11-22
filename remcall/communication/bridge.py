@@ -4,23 +4,23 @@ from .receive import Receiver
 from .send import Sender
 from .store import ReferenceStore
 from .proxy import ProxyFactory
-from ..implementation import EnumRecordFactory
+from ..implementation import EnumRecordImplementation
 from ..schema import Type
 from threading import Thread
 from ..naming import PythonNameConverter
 
 
 class Bridge:
-    def __init__(self, schema, instream, outstream, main, enum_record_factory: EnumRecordFactory):
-        enum_record_factory = enum_record_factory or EnumRecordFactory(schema, PythonNameConverter())
-        self.receiver = Receiver(schema, instream, None, self.return_method, self.acknowledge_disconnect, enum_record_factory.name_converter)
+    def __init__(self, schema, instream, outstream, main, enum_record_implementation: EnumRecordImplementation):
+        enum_record_implementation = enum_record_implementation or EnumRecordImplementation(schema, PythonNameConverter())
+        self.receiver = Receiver(schema, instream, None, self.return_method, self.acknowledge_disconnect, enum_record_implementation.name_converter)
         self.sender = Sender(schema, outstream, None)
-        self.proxy_factory = ProxyFactory(schema, self, enum_record_factory.name_converter)
+        self.proxy_factory = ProxyFactory(schema, self, enum_record_implementation.name_converter)
         self.main = main
         self.is_client = main is None
         self.store = ReferenceStore(self.is_client, self.proxy_factory)
         self.receiver.get_object = self.store.get_object
-        self.receiver.get_enum_implementation = enum_record_factory
+        self.receiver.get_enum_implementation = enum_record_implementation
         self.sender.get_id_for_object = self.store.get_id_for_object
         main_id = self.sender.get_id_for_object(self.main)
         if self.is_client:
