@@ -15,7 +15,7 @@ class EnumRecordImplementation:
             self.types[enum] = create_enum_implementation(enum, name_converter)
         self.impl = ModuleType('enum_record_implementation')
         for typ, impl in self.types.items():
-            setattr(self.impl, typ.name, impl)
+            setattr(self.impl, impl.__name__, impl)
 
     def __call__(self, typ):
         if not typ in self.types:
