@@ -66,7 +66,7 @@ class CSharphCodeGenerator:
         for enum in self.schema.enums_sorted:
             self.write_enum(enum)
             self.linebreak()
-        for record in self.schema.records:
+        for record in self.schema.records_sorted:
             self.write_record(record)
             self.linebreak()
         for interface in self.schema.interfaces_sorted:
@@ -82,7 +82,7 @@ class CSharphCodeGenerator:
 
     def write_record(self, record):
         record_name = self.scalartypename(record)
-        fields = ['{} {};'.format(self.typename(typ), self.name_converter.record_field_name(name)) for typ, name in record.fields_sorted]
+        fields = ['{} {};'.format(self.typename(typ), self.name_converter.record_field_name(name)) for typ, name in record.fields]
         self.writeline('struct {} {{'.format(record_name))
         self.indent()
         for field in fields:
