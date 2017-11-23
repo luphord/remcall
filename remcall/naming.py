@@ -1,4 +1,5 @@
-from .schema import Type, Interface, Enum, Record
+from .schema import *
+from .error import UnknownType
 
 class IdentityNameConverter:
     def interface_name(self, name):
@@ -50,6 +51,28 @@ class PythonNameConverter(IdentityNameConverter):
 
     def record_field_name(self, name):
         return self.method_name(name)
+
+    def type_name(self, typ: Type):
+        if isinstance(typ, Primitive):
+            if typ == string:
+                return 'str'
+            elif typ in (int8, int16, int32, int64, uint8, uint16, uint32, uint64):
+                return 'int'
+            elif typ in (float32, float64):
+                return 'float'
+            elif typ == void:
+                return 'None'
+            elif typ == boolean:
+                return 'bool'
+            elif typ == date:
+                return 'datetime.date'
+            elif typ == datetime:
+                return 'datetime.datetime'
+            elif typ == time:
+                return 'datetime.time'
+            else:
+                raise UnknownType(typ)
+        return super().type_name(typ)
 
 class CSharpNameConverter(IdentityNameConverter):
     def interface_name(self, name):
