@@ -25,3 +25,13 @@ class QueueStream:
 
     def flush(self):
         pass
+
+
+class TypeWrapper:
+    '''Wraps a core.Type and provides a nice annotation for Signature instances'''
+    def __init__(self, typ, name_converter):
+        self.typ = typ
+        self.name_converter = name_converter
+
+    def __repr__(self):
+        return self.type_name(self.typ)

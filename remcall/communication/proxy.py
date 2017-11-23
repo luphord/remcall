@@ -1,19 +1,11 @@
 import types
 from inspect import Signature, Parameter
 from ..schema import *
+from ..util import TypeWrapper
 from ..error import UnknownType
 
 class ProxyType:
     pass
-
-class TypeWrapper:
-    '''Wraps a core.Type and provides a nice annotation for Signature instances'''
-    def __init__(self, typ, name_converter):
-        self.typ = typ
-        self.name_converter = name_converter
-
-    def __repr__(self):
-        return self.type_name(self.typ)
 
 class MethodProxy:
     def __init__(self, interface, method, bridge, name_converter):

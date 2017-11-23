@@ -25,12 +25,14 @@ dFN0YXR1cwAAAAAAAAAQAAoAAAAKR2V0QWRkcmVzcwAAAAAAAAARFMkyjcRCzj7DYZ5SzZdAy94d
 SCHEMA = schema_from_bytes(serialized_schema)
 enum_record_implementation = EnumRecordImplementation(SCHEMA, PythonNameConverter())
 Status = enum_record_implementation.impl.Status
+Address = enum_record_implementation.impl.Address
 
 class UserImpl:
     def __init__(self, name, age):
         self.name = name
         self.age = age
         self.friends = {}
+        self.address = Address(street='Home Drive', number=123)
 
     def get_age(self):
         return self.age
