@@ -34,4 +34,4 @@ class TypeWrapper:
         self.name_converter = name_converter
 
     def __repr__(self):
-        return self.type_name(self.typ)
+        return self.name_converter.type_name(self.typ)
