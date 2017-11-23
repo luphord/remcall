@@ -112,12 +112,8 @@ class Record(Type):
     def is_declared(self) -> bool:
         return True
 
-    @property
-    def fields_sorted(self):
-        return sorted(self.fields, key=lambda field: field[1])
-
     def pretty_print(self) -> str:
-        return 'record {} {{\n{}\n}}'.format(self.name, '\n'.join('  {} {};'.format(field_type, field_name) for field_type, field_name in self.fields_sorted))
+        return 'record {} {{\n{}\n}}'.format(self.name, '\n'.join('  {} {};'.format(field_type, field_name) for field_type, field_name in self.fields))
 
     def __repr__(self) -> str:
         return '{}(name="{}", fields={})'.format(self.__class__.__name__, self.name, self.fields)

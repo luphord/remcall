@@ -66,7 +66,7 @@ class CSharphCodeGenerator:
         for enum in self.schema.enums_sorted:
             self.write_enum(enum)
             self.linebreak()
-        for record in self.schema.records_sorted:
+        for record in self.schema.records:
             self.write_record(record)
             self.linebreak()
         for interface in self.schema.interfaces_sorted:
