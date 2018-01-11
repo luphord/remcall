@@ -18,7 +18,6 @@ def create_record_implementation(record, name_converter):
                            for tp, name in record.fields]
     params.insert(0, Parameter('self', Parameter.POSITIONAL_ONLY, annotation=TypeWrapper(record, name_converter)))
     __signature__ = Signature(parameters=params)
-    import pdb; pdb.set_trace()
     def __init__(self, *args, **kwargs):
         bound_values = __signature__.bind(self, *args, **kwargs)
         for key, val in bound_values.arguments.items():

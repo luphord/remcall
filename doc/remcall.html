@@ -188,7 +188,7 @@ Upon initiating a remcall communication this hash value is exchanged between the
     <tr>
       <td><code>int32</code></td>
       <td>Type reference for this enum</td>
-      <td>Marking the following stream of data as an enum declaration</td>
+      <td>ID by which this enum type can be referenced in the schema</td>
       <td>0x00000021</td>
     </tr>
     <tr>
@@ -196,6 +196,12 @@ Upon initiating a remcall communication this hash value is exchanged between the
       <td>Name for this enum</td>
       <td>Type name for this enum used in target languages</td>
       <td>Status</td>
+    </tr>
+    <tr>
+      <td><code>uint32</code></td>
+      <td>Number of possible enum values</td>
+      <td>Number of possible values this enum can take</td>
+      <td>0x00000003</td>
     </tr>
     <tr>
       <td><code>name[]</code></td>
@@ -209,6 +215,80 @@ Upon initiating a remcall communication this hash value is exchanged between the
 <div class="anchor" id="records"></div>
 
 <h3>Declaration of Records</h3>
+
+<p>The following table defines the declaration of records in remcall.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Example / Constant Value<th>
+    <tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>uint8</code></td>
+      <td>Declare record constant</td>
+      <td>Marking the following stream of data as a record declaration</td>
+      <td>0x03</td>
+    </tr>
+    <tr>
+      <td><code>int32</code></td>
+      <td>Type reference for this enum</td>
+      <td>ID by which this record type can be referenced in the schema</td>
+      <td>0x00000021</td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>Name for this record</td>
+      <td>Type name for this record used in target languages</td>
+      <td>Address</td>
+    </tr>
+    <tr>
+      <td><code>uint32</code></td>
+      <td>Number of record fields</td>
+      <td>Number of fields this record type contains</td>
+      <td>0x00000002</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td><a href="#record-fields">Field declarations</a></td>
+      <td>Sequence (of length as defined by previous <code>uint32</code>) of type-name pairs describing individual record fields</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="anchor" id="record-fields"></div>
+
+<p>The following table desribes the field declarations within an enum.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Example / Constant Value<th>
+    <tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int32</code></td>
+      <td>Type reference for this field</td>
+      <td>References a type (primitive or complex)</td>
+      <td>0x0000000C</td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>Name for this field</td>
+      <td>Field name used in target languages</td>
+      <td>Street</td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="anchor" id="interfaces"></div>
 
