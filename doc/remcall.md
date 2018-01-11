@@ -213,9 +213,9 @@ The following table defines the declaration of records in remcall.
     </tr>
     <tr>
       <td><code>int32</code></td>
-      <td>Type reference for this enum</td>
+      <td>Type reference for this record</td>
       <td>ID by which this record type can be referenced in the schema</td>
-      <td>0x00000021</td>
+      <td>0x00000022</td>
     </tr>
     <tr>
       <td><code>name</code></td>
@@ -240,7 +240,7 @@ The following table defines the declaration of records in remcall.
 
 <div class="anchor" id="record-fields"></div>
 
-The following table desribes the field declarations within an enum.
+The following table describes the field declarations within an record.
 
 <table>
   <thead>
@@ -270,6 +270,53 @@ The following table desribes the field declarations within an enum.
 <div class="anchor" id="interfaces"></div>
 
 ### Declaration of Interfaces
+
+The following table defines the declaration of interfaces in remcall.
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Example / Constant Value<th>
+    <tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>uint8</code></td>
+      <td>Declare interface constant</td>
+      <td>Marking the following stream of data as an interface declaration</td>
+      <td>0x04</td>
+    </tr>
+    <tr>
+      <td><code>int32</code></td>
+      <td>Type reference for this interface</td>
+      <td>ID by which this interface type can be referenced in the schema</td>
+      <td>0x00000023</td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>Name for this interface</td>
+      <td>Type name for this interface used in target languages</td>
+      <td>User</td>
+    </tr>
+    <tr>
+      <td><code>uint32</code></td>
+      <td>Number of methods</td>
+      <td>Number of methods this interface type contains</td>
+      <td>0x00000005</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td><a href="#methods">Method declarations</a></td>
+      <td>Sequence (of length as defined by previous <code>uint32</code>) of method declarations</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="anchor" id="methods"></div>
 
 <div class="anchor" id="communication"></div>
 
