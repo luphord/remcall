@@ -84,6 +84,7 @@ Upon initiating a remcall communication this hash value is exchanged between the
       <td>A nice schema</td>
     </tr>
     <tr>
+      <div class="anchor" id="bytes-method-ref"></div>
       <td><code>uint32</code></td>
       <td>Number of bytes for method references</td>
       <td>During communication, methods are identified using unsigned integers of this length, allowed values are 1, 2, 4 and 8; should be checked against the number of available methods in the schema by the compiler</td>
@@ -240,7 +241,7 @@ The following table defines the declaration of records in remcall.
 
 <div class="anchor" id="record-fields"></div>
 
-The following table describes the field declarations within an record.
+The following table describes the field declarations within a record.  This declaration works exactly the same way as [method argument declarations](#method-args).
 
 <table>
   <thead>
@@ -317,6 +318,74 @@ The following table defines the declaration of interfaces in remcall.
 </table>
 
 <div class="anchor" id="methods"></div>
+
+The following table describes the method declarations within an interface.
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Example / Constant Value<th>
+    <tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>uint8</code>, <code>uint16</code>, <code>uint32</code> or <code>uint64</code></td>
+      <td>Method reference</td>
+      <td>Reference to this method; exact type is defined in schema header by <a href="#bytes-method-ref">Number of bytes for method references</a></td>
+      <td>0x09</td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>Name for this method</td>
+      <td>Method name used in target languages</td>
+      <td>SetName</td>
+    </tr>
+    <tr>
+      <td><code>uint32</code></td>
+      <td>Number of arguments</td>
+      <td>Number of arguments this method expects</td>
+      <td>0x00000001</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td><a href="#method-args">Method arguments</a></td>
+      <td>Sequence (of length as defined by previous <code>uint32</code>) of type-name pairs describing individual arguments</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="anchor" id="method-args"></div>
+
+The following table describes the argument declarations within a method. This declaration works exactly the same way as [record field declarations](#record-fields).
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Example / Constant Value<th>
+    <tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int32</code></td>
+      <td>Type reference for this argument</td>
+      <td>References a type (primitive or complex)</td>
+      <td>0x0000000C</td>
+    </tr>
+    <tr>
+      <td><code>name</code></td>
+      <td>Name for this argument</td>
+      <td>Argument name used in target languages</td>
+      <td>name</td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="anchor" id="communication"></div>
 
