@@ -38,15 +38,15 @@ Remcall employs a [binary representation](#binary) for both, its [schema](#schem
 
 Both schemas and communications are based on binary representations in remcall. The following rules apply to these representations:
 
-- Primitive types in remcall are: `void`, `boolean`, `int8`, `uint8`, `int16`, `uint16`, `int32`, `uint32`, `int64`, `uint64`, `float32`, `float64`, `string`, `date`, `time`, `datetime`
-- Bytes are represented using `uint8`
-- Arrays of values are represented using a `uint32` denoting the length and then all consecutive binary representations of the values
-- `string` values are encoded in UTF8 and then serialized as a byte-Array
-- Types are referenced using `int32`; negative values reference an array of the type that is referenced using the positive number
-- Methods are referenced using one of the unsigned integer types, the schema specifies which one to use
-- Objects are referenced using one of the signed integer types, the schema specifies which one to use; negative values indicate that the implementation resides on the client (and is proxied on the server), positive values indicate that the implementation resides on the server (and is proxied on the client)
-- The pseudo-type `name` is used in this document (but does not actually exist in remcall); it denotes a `string` that contains only characters from 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' and does not start with a number; such names should usable as variable or type names in all modern programming languages
-- Binary values will usually be displayed using their hexadecimal representation in this document which will be indicated using a leading "0x", e.g. 0xff to display a `uint8` with value 255; longer sequences of binary data will be split into blocks of 4 bytes = 8 hex characters, e.g. 0x00000001 0x00000002 0x00000003;if binary values exhibit a useful string representation that will be used instead of hexadecimal values
+- Primitive types in remcall are: `void`, `boolean`, `int8`, `uint8`, `int16`, `uint16`, `int32`, `uint32`, `int64`, `uint64`, `float32`, `float64`, `string`, `date`, `time`, `datetime`.
+- Bytes are represented using `uint8`.
+- Arrays of values are represented using a `uint32` denoting the length and then all consecutive binary representations of the values.
+- `string` values are encoded in UTF8 and then serialized as a byte-Array.
+- Types are referenced using `int32`; negative values reference an array of the type that is referenced using the positive number. Type references are never exchanged in a remcall communication, they are relevant only within the schema.
+- Methods are referenced using one of the *unsigned* integer types, the schema specifies which one to use.
+- Objects are referenced using one of the *signed* integer types, the schema specifies which one to use; negative values indicate that the implementation resides on the client (and is proxied on the server), positive values indicate that the implementation resides on the server (and is proxied on the client).
+- The pseudo-type `name` is used in this document (but does not actually exist in remcall); it denotes a `string` that contains only characters from 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' and does not start with a number; such names should be usable as variable or type names in all modern programming languages.
+- Binary values will usually be displayed using their hexadecimal representation in this document which will be indicated using a leading "0x", e.g. 0xff to display a `uint8` with value 255; longer sequences of binary data will be split into blocks of 4 bytes = 8 hex characters, e.g. 0x00000001 0x00000002 0x00000003; if binary values exhibit a useful string representation, this will be used instead of hexadecimal values.
 
 <div class="anchor" id="schema"></div>
 
@@ -80,7 +80,7 @@ Upon initiating a remcall communication this hash value is exchanged between the
     <tr>
       <td><code>string</code></td>
       <td>Schema label</td>
-      <td>Free text label for the schema; for informational purposes only, not reflected in the compiled code</td>
+      <td>Free text label for the schema; for informational purposes only, may or may not be reflected in the compiled code</td>
       <td>A nice schema</td>
     </tr>
     <tr>
@@ -93,7 +93,7 @@ Upon initiating a remcall communication this hash value is exchanged between the
     <tr>
       <td><code>uint32</code></td>
       <td>Number of bytes for object references</td>
-      <td>During communication, methods are identified using signed integers of this length, allowed values are 1, 2, 4 and 8; note that this number is a runtime restriction on the number of objects, using 1 restricts the number of possible object references to 128 on both client and server</td>
+      <td>During communication, objects are identified using signed integers of this length, allowed values are 1, 2, 4 and 8; note that this number is a runtime restriction on the number of objects, using 1 restricts the number of possible object references to 128 on both client and server</td>
       <td>0x00000004</td>
     </tr>
     <tr>
