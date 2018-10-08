@@ -42,7 +42,7 @@ Both schemas and communications are based on binary representations in remcall. 
 - Bytes are represented using `uint8`.
 - Arrays of values are represented using a `uint32` denoting the length and then all consecutive binary representations of the values.
 - `string` values are encoded in UTF8 and then serialized as a byte-Array.
-- Types are referenced using `int32`; negative values reference an array of the type that is referenced using the positive number. Type references are never exchanged in a remcall communication, they are relevant only within the schema.
+- Types are referenced using `int32`; negative values reference an array of the type that is referenced using the positive number (arrays of arrays are not supported in remcall). Type references are never exchanged in a remcall communication, they are relevant only within the schema.
 - Methods are referenced using one of the *unsigned* integer types, the schema specifies which one to use.
 - Objects are referenced using one of the *signed* integer types, the schema specifies which one to use; negative values indicate that the implementation resides on the client (and is proxied on the server), positive values indicate that the implementation resides on the server (and is proxied on the client).
 - The pseudo-type `name` is used in this document (but does not actually exist in remcall); it denotes a `string` that contains only characters from 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' and does not start with a number; such names should be usable as variable or type names in all modern programming languages.

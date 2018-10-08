@@ -64,7 +64,7 @@ Remcall employs a <a href="#binary">binary representation</a> for both, its <a h
 <li>Bytes are represented using <code>uint8</code>.</li>
 <li>Arrays of values are represented using a <code>uint32</code> denoting the length and then all consecutive binary representations of the values.</li>
 <li><code>string</code> values are encoded in UTF8 and then serialized as a byte-Array.</li>
-<li>Types are referenced using <code>int32</code>; negative values reference an array of the type that is referenced using the positive number. Type references are never exchanged in a remcall communication, they are relevant only within the schema.</li>
+<li>Types are referenced using <code>int32</code>; negative values reference an array of the type that is referenced using the positive number (arrays of arrays are not supported in remcall). Type references are never exchanged in a remcall communication, they are relevant only within the schema.</li>
 <li>Methods are referenced using one of the <em>unsigned</em> integer types, the schema specifies which one to use.</li>
 <li>Objects are referenced using one of the <em>signed</em> integer types, the schema specifies which one to use; negative values indicate that the implementation resides on the client (and is proxied on the server), positive values indicate that the implementation resides on the server (and is proxied on the client).</li>
 <li>The pseudo-type <code>name</code> is used in this document (but does not actually exist in remcall); it denotes a <code>string</code> that contains only characters from 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' and does not start with a number; such names should be usable as variable or type names in all modern programming languages.</li>
