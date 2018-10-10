@@ -10,15 +10,15 @@ type Enum struct {
 	Values []Name
 }
 
-func (enum Enum) TypeName() string {
+func (enum *Enum) TypeName() string {
 	return string(enum.Name)
 }
 
-func (enum Enum) Resolve(lookup map[TypeRef]Type) error {
+func (enum *Enum) Resolve(lookup map[TypeRef]Type) error {
 	return nil
 }
 
-func (enum Enum) String() string {
+func (enum *Enum) String() string {
 	buffer := bytes.Buffer{}
 	for _, name := range enum.Values {
 		buffer.WriteString("  ")

@@ -19,11 +19,11 @@ type Record struct {
 	Fields []NameTypePair
 }
 
-func (record Record) TypeName() string {
+func (record *Record) TypeName() string {
 	return string(record.Name)
 }
 
-func (record Record) Resolve(lookup map[TypeRef]Type) error {
+func (record *Record) Resolve(lookup map[TypeRef]Type) error {
 	for i, ntp := range record.Fields {
 		switch tr := ntp.Type.(type) {
 		case TypeRef:
@@ -37,7 +37,7 @@ func (record Record) Resolve(lookup map[TypeRef]Type) error {
 	return nil
 }
 
-func (record Record) String() string {
+func (record *Record) String() string {
 	buffer := bytes.Buffer{}
 	for _, nameTypePair := range record.Fields {
 		buffer.WriteString("  ")

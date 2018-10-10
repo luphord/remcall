@@ -18,5 +18,5 @@ var printed_enum = `enum Hello {
 
 func TestEnumPrinting(t *testing.T) {
 	enum := Enum{"Hello", []Name{"Opt1", "Opt2"}}
-	AssertEqual(t, printed_enum, fmt.Sprint(enum))
+	AssertEqual(t, printed_enum, fmt.Sprint(&enum))
 }

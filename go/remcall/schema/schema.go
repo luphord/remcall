@@ -28,7 +28,7 @@ func Resolve(lookup map[TypeRef]Type, ref TypeRef) (Type, error) {
 		return nil, TypeNotFound{ref}
 	}
 	if isArray {
-		return Array{tp}, nil
+		return &Array{tp}, nil
 	} else {
 		return tp, nil
 	}
