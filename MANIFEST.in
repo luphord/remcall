@@ -1,2 +1,4 @@
+include README.txt
+include LICENSE
 recursive-include doc *
 recursive-include test *
