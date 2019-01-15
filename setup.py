@@ -4,6 +4,7 @@ setup(name='remcall',
       description='remcall - ipc using remote method calls and object proxying between different programming languages',
       author='luphord',
       author_email='luphord@protonmail.com',
-      url='https://remcall.org/',
+      license="MIT license",
+      url='https://github.com/luphord/remcall',
       packages=['remcall', 'remcall.codec', 'remcall.schema', 'remcall.communication'],
      )
