@@ -1,7 +1,20 @@
-Remcall
--------
+=======
+remcall
+=======
 
-Remcall (short for remote method calls) is a protocol for inter
+
+.. image:: https://img.shields.io/pypi/v/remcall.svg
+        :target: https://pypi.python.org/pypi/remcall
+
+.. image:: https://img.shields.io/travis/luphord/remcall.svg
+        :target: https://travis-ci.org/luphord/remcall
+
+.. image:: https://readthedocs.org/projects/remcall/badge/?version=latest
+        :target: https://remcall.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
+
+remcall (short for remote method calls) is a protocol for inter
 process communication (IPC) between different programming languages
 using object proxying as its primary method for information exchange.
 Communication using remcall requires the upfront definition of a
@@ -18,3 +31,6 @@ proxying in both directions. Remcall employs a binary representation
 for both, its schema and its communication protocol. Communcation can
 be layered on top of any bidirectional streams supporting binary data
 such as TCP sockets, stdin/out, websockets.
+
+* Free software: MIT license
+* Documentation: https://remcall.readthedocs.io.
