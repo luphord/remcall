@@ -17,6 +17,10 @@ be layered on top of any bidirectional streams supporting binary data
 such as TCP sockets, stdin/out, websockets.
 '''
 
+__author__ = 'luphord'
+__email__ = 'luphord@protonmail.com'
+__version__ = '0.1.0'
+
 from . import schema
 from .error import RemcallError
 from .codec.read import SchemaReader, read_schema, schema_from_bytes
