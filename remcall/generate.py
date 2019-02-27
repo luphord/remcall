@@ -103,4 +103,4 @@ class CSharphCodeGenerator:
         method_name = self.name_converter.method_name(method.name)
         args = ['{!s} {}'.format(self.typename(typ), self.name_converter.parameter_name(name)) for typ, name in method.arguments]
         ret = self.typename(method.return_type)
-        self.writeline('{} {}({});'.format(ret, method.name, ', '.join(args)))
+        self.writeline('{} {}({});'.format(ret, method_name, ', '.join(args)))
