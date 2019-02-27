@@ -6,6 +6,7 @@ Welcome to remcall's documentation!
    :caption: Contents:
 
    readme
+   specification
    installation
    usage
    modules
