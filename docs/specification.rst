@@ -222,7 +222,9 @@ The following table defines the declaration of records in remcall.
 
 .. _record-fields:
 
-The following table describes the field declarations within a record.  This declaration works exactly the same way as [method argument declarations](#method-args).
+The following table describes the field declarations within a record.  This declaration works exactly the same way as `method argument declarations`__.
+
+__ method-args_
 
 .. raw:: html
 
@@ -349,7 +351,9 @@ The following table describes the method declarations within an interface.
 
 .. _method-args:
 
-The following table describes the argument declarations within a method. This declaration works exactly the same way as [record field declarations](#record-fields).
+The following table describes the argument declarations within a method. This declaration works exactly the same way as `record field declarations`__.
+
+__ record-fields_
 
 .. raw:: html
 
