@@ -2,6 +2,7 @@ from . import schema
 from . import RemcallError
 from .naming import CSharpNameConverter
 
+
 class CSharphCodeGenerator:
 
     indent_chars = '\t'
@@ -24,7 +25,8 @@ class CSharphCodeGenerator:
         schema.datetime: 'DateTime'
     }
 
-    def __init__(self, schema, namespace='Remcall.Generated', name_converter = CSharpNameConverter()):
+    def __init__(self, schema, namespace='Remcall.Generated',
+                 name_converter=CSharpNameConverter()):
         self.schema = schema
         self.namespace = namespace
         self.name_converter = name_converter
@@ -53,7 +55,9 @@ class CSharphCodeGenerator:
             return self.name_converter.type_name(typ)
 
     def typename(self, typ):
-        return '{}[]'.format(self.scalartypename(typ.typ)) if isinstance(typ, schema.Array) else self.scalartypename(typ)
+        return '{}[]'.format(self.scalartypename(typ.typ)) \
+               if isinstance(typ, schema.Array) \
+               else self.scalartypename(typ)
 
     def write_schema(self, fp):
         self.outfile = fp
@@ -77,12 +81,17 @@ class CSharphCodeGenerator:
 
     def write_enum(self, enum):
         enum_name = self.scalartypename(enum)
-        enum_values = [self.name_converter.enum_field_name(v) for v in enum.values]
-        self.writeline('enum {} {{ {} }}'.format(enum_name, ', '.join(enum_values)))
+        enum_values = [self.name_converter.enum_field_name(v)
+                       for v in enum.values]
+        self.writeline(
+            'enum {} {{ {} }}'.format(enum_name, ', '.join(enum_values)))
 
     def write_record(self, record):
         record_name = self.scalartypename(record)
-        fields = ['{} {};'.format(self.typename(typ), self.name_converter.record_field_name(name)) for typ, name in record.fields]
+        fields = ['{} {};'
+                  .format(self.typename(typ),
+                          self.name_converter.record_field_name(name))
+                  for typ, name in record.fields]
         self.writeline('struct {} {{'.format(record_name))
         self.indent()
         for field in fields:
@@ -101,6 +110,8 @@ class CSharphCodeGenerator:
 
     def write_method(self, method):
         method_name = self.name_converter.method_name(method.name)
-        args = ['{!s} {}'.format(self.typename(typ), self.name_converter.parameter_name(name)) for typ, name in method.arguments]
+        args = ['{!s} {}'.format(self.typename(typ),
+                                 self.name_converter.parameter_name(name))
+                for typ, name in method.arguments]
         ret = self.typename(method.return_type)
         self.writeline('{} {}({});'.format(ret, method_name, ', '.join(args)))

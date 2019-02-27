@@ -1,5 +1,9 @@
-from .schema import *
+from .schema import Type, Interface, Enum, Record, Primitive, \
+                    string, int8, int16, int32, int64, uint8, uint16, \
+                    uint32, uint64, float32, float64, void, boolean, \
+                    date, datetime             
 from .error import UnknownType
+
 
 class IdentityNameConverter:
     def interface_name(self, name):
@@ -33,6 +37,7 @@ class IdentityNameConverter:
         else:
             raise ValueError('No name for {!r}'.format(typ))
 
+
 class PythonNameConverter(IdentityNameConverter):
     def _iter_method_name(self, name):
         for idx, letter in enumerate(name):
@@ -56,7 +61,8 @@ class PythonNameConverter(IdentityNameConverter):
         if isinstance(typ, Primitive):
             if typ == string:
                 return 'str'
-            elif typ in (int8, int16, int32, int64, uint8, uint16, uint32, uint64):
+            elif typ in (int8, int16, int32, int64,
+                         uint8, uint16, uint32, uint64):
                 return 'int'
             elif typ in (float32, float64):
                 return 'float'
@@ -73,6 +79,7 @@ class PythonNameConverter(IdentityNameConverter):
             else:
                 raise UnknownType(typ)
         return super().type_name(typ)
+
 
 class CSharpNameConverter(IdentityNameConverter):
     def interface_name(self, name):
