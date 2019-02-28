@@ -1,5 +1,7 @@
 class TypeRef:
-    '''Represents temporary type references by an integer; to be resolved to actual types later'''
+    '''Represents temporary type references by an integer; to be resolved
+       to actual types later
+    '''
     def __init__(self, type_ref: int):
         self.type_ref = type_ref
 
