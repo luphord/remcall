@@ -90,9 +90,9 @@ class Enum(Type):
     def __init__(self, name: str, values: Iterable[str]) -> None:
         super().__init__(name)
         self.values = list(values)
-        assert len(self.values) <= 256, ('Enums may contain at most 256 ' +
-                                         'values, got {}') \
-                                        .format(len(self.values))
+        assert len(self.values) <= 256, \
+            ('Enums may contain at most 256 ' +
+             'values, got {}').format(len(self.values))
         for value in self.values:
             assert_name(value)
 
@@ -214,14 +214,12 @@ class Schema:
                  sha256_digest=None):
         self.label = label
         self.types = set(typ for typ in types if typ.is_declared)
-        assert bytes_method_ref in (1, 2, 4, 8), ('Method references have ' +
-                                                  'to be 1, 2, 4 or 8 bytes ' +
-                                                  'long, got {}') \
-                                                 .format(bytes_method_ref)
-        assert bytes_object_ref in (1, 2, 4, 8), ('Object references have ' +
-                                                  'to be 1, 2, 4 or 8 bytes ' +
-                                                  'long, got {}') \
-                                                 .format(bytes_method_ref)
+        assert bytes_method_ref in (1, 2, 4, 8), \
+            ('Method references have to be 1, 2, 4 or 8 bytes ' +
+             'long, got {}').format(bytes_method_ref)
+        assert bytes_object_ref in (1, 2, 4, 8), \
+            ('Object references have to be 1, 2, 4 or 8 bytes ' +
+             'long, got {}').format(bytes_method_ref)
         self.bytes_method_ref = bytes_method_ref
         self.bytes_object_ref = bytes_object_ref
         if sha256_digest:

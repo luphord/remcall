@@ -3,6 +3,7 @@ from ..schema import Type
 from .proxy import ProxyType
 from ..error import UnknownProxyObject, UnknownImplementationObjectReference
 
+
 class IdStore:
     def __init__(self):
         self.id_to_obj = {}
@@ -52,12 +53,12 @@ class ReferenceStore:
         return self._next_object_id
 
     def get_proxy_object(self, key: int, typ: Type):
-        if not key in self.proxy_objects:
+        if key not in self.proxy_objects:
             self.proxy_objects[key] = self.proxy_factory(typ)
         return self.proxy_objects[key]
 
     def get_implementation_object(self, key: int):
-        if not key in self.implementation_objects:
+        if key not in self.implementation_objects:
             raise UnknownImplementationObjectReference(key)
         return self.implementation_objects[key]
 
@@ -72,15 +73,23 @@ class ReferenceStore:
         return self.implementation_objects.get_id_for_object(obj)
 
     def get_object(self, key: int, typ: Type):
-        log(DEBUG, '{} store is getting object for ID {}'.format('client' if self.is_client else 'server', key))
+        log(DEBUG, '{} store is getting object for ID {}'
+                   .format('client' if self.is_client else 'server', key))
         if key == 0:
             return None
-        is_proxy_obj = (self.is_client and key > 0) or (not self.is_client and key < 0)
-        log(DEBUG, '{} references {} object'.format(key, 'a proxy' if is_proxy_obj else 'an implementation'))
-        return self.get_proxy_object(key, typ) if is_proxy_obj else self.get_implementation_object(key)
+        is_proxy_obj = (self.is_client and key > 0) \
+            or (not self.is_client and key < 0)
+        log(DEBUG, '{} references {} object'
+                   .format(key,
+                           'a proxy' if is_proxy_obj else 'an implementation'))
+        return self.get_proxy_object(key, typ) \
+            if is_proxy_obj \
+            else self.get_implementation_object(key)
 
     def get_id_for_object(self, obj):
         if obj is None:
             return 0
         is_proxy_obj = isinstance(obj, ProxyType)
-        return self.get_id_for_proxy_object(obj) if is_proxy_obj else self.get_id_for_implementation_object(obj)
+        return self.get_id_for_proxy_object(obj) \
+            if is_proxy_obj \
+            else self.get_id_for_implementation_object(obj)
