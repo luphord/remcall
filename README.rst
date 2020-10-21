@@ -6,8 +6,8 @@ remcall
 .. image:: https://img.shields.io/pypi/v/remcall.svg
         :target: https://pypi.python.org/pypi/remcall
 
-.. image:: https://img.shields.io/travis/luphord/remcall.svg
-        :target: https://travis-ci.org/luphord/remcall
+.. image:: https://travis-ci.com/luphord/remcall.svg
+        :target: https://travis-ci.com/luphord/remcall
 
 .. image:: https://readthedocs.org/projects/remcall/badge/?version=latest
         :target: https://remcall.readthedocs.io/en/latest/?badge=latest
